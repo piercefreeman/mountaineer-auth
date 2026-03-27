@@ -13,7 +13,13 @@ dependencies = [
     "pydantic>=2.6.1",
     "pydantic-settings>=2.1.0",
     "email-validator>=2.1.1",
-    "iceaxe>=0.0.0",
+    # unpinned dependencies to allow flexibility
+    "mountaineer",
+    "iceaxe",
+    "mountaineer-cloud",
+    "mountaineer-email",
+    "waymark"
+
 ]
 
 [project.scripts]
@@ -34,17 +40,9 @@ artifacts = ["mountaineer_auth/views/_static", "mountaineer_auth/views/_ssr"]
 [dependency-groups]
 dev = [
     "ruff>=0.2.1",
-    "mypy>=1.8.0",
     "types-python-jose>=3.3.4.20240106",
     "pytest>=8.0.0",
-    "types-protobuf>=4.24.0.20240129",
     "pytest-asyncio>=0.23.5",
-    "pyright>=1.1.352",
-    # Development dependencies for local mountaineer packages
-    "mountaineer>=0.10.0.dev3",
-    #"mountaineer",
-    "mountaineer-email",
-    "mountaineer-cloud",
 ]
 
 [tool.mypy]
@@ -74,8 +72,7 @@ mountaineer = ["mountaineer"]
 
 [tool.uv.sources]
 #mountaineer = { path = "../../mountaineer", editable = true }
-mountaineer-email = { path = "../mountaineer-email", editable = true }
-mountaineer-cloud = { path = "../mountaineer-cloud", editable = true }
+#mountaineer-cloud = { path = "../mountaineer-cloud", editable = true }
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.

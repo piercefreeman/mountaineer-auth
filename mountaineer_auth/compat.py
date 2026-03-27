@@ -16,11 +16,11 @@ async def send_email_workflow(
     workflow system. It runs the SendEmail workflow directly.
     """
     try:
-        from mountaineer_email import SendEmail, SendEmailInput
+        from mountaineer_auth import SendEmail, SendEmailInput
     except ImportError:
         raise ImportError(
-            "mountaineer-email is required to send emails. "
-            "Please install it with: pip install mountaineer-email"
+            "mountaineer-auth is required to send emails. "
+            "Please install it with: pip install mountaineer-auth"
         )
 
     send_email_input = SendEmailInput.from_email_input(
