@@ -1,0 +1,98 @@
+[project]
+name = "mountaineer-auth"
+version = "0.1.0"
+description = ""
+authors = [
+    { name = "Pierce Freeman", email = "pierce@freeman.vc" },
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "bcrypt>=4.1.2",
+    "python-jose[cryptography]>=3.3.0",
+    "pydantic>=2.6.1",
+    "pydantic-settings>=2.1.0",
+    "email-validator>=2.1.1",
+    "iceaxe>=0.0.0",
+]
+
+[project.scripts]
+build-auth = "mountaineer_auth.cli:build"
+
+[project.optional-dependencies]
+recaptcha = [
+    "google-cloud-recaptcha-enterprise>=1.18.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+artifacts = ["mountaineer_auth/views/_static", "mountaineer_auth/views/_ssr"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.2.1",
+    "mypy>=1.8.0",
+    "types-python-jose>=3.3.4.20240106",
+    "pytest>=8.0.0",
+    "types-protobuf>=4.24.0.20240129",
+    "pytest-asyncio>=0.23.5",
+    "pyright>=1.1.352",
+    # Development dependencies for local mountaineer packages
+    "mountaineer>=0.10.0.dev3",
+    #"mountaineer",
+    "mountaineer-email",
+    "mountaineer-cloud",
+]
+
+[tool.mypy]
+warn_return_any = true
+warn_unused_configs = true
+check_untyped_defs = true
+plugins = ["pydantic.mypy"]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+[tool.ruff.lint.isort]
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "mountaineer",
+    "first-party",
+    "local-folder",
+]
+combine-as-imports = true
+
+[tool.ruff.lint.isort.sections]
+mountaineer = ["mountaineer"]
+
+[tool.uv.sources]
+#mountaineer = { path = "../../mountaineer", editable = true }
+mountaineer-email = { path = "../mountaineer-email", editable = true }
+mountaineer-cloud = { path = "../mountaineer-cloud", editable = true }
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Disable print statements
+select = ["E4", "E7", "E9", "F", "I001", "T201"]
+
+[[tool.mypy.overrides]]
+module = "google.cloud.recaptchaenterprise_v1.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "google.oauth2.*"
+ignore_missing_imports = true
+
+[tool.pyright]
+ignore = [
+    "mountaineer_auth/recaptcha.py",
+    "mountaineer_auth/__tests__/test_recaptcha.py",
+    "mountaineer_auth/dependencies/core.py",
+]
