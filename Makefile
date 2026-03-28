@@ -32,7 +32,7 @@ endef
 # Usage: $(call run_ty,<directory>)
 define run_ty
 	@echo "\n=== Running ty on $(1) ==="; \
-	(cd $(1) && uv run ty check .) || { echo "FAILED: ty in $(1)"; exit 1; }; \
+	(uv run ty check --project . $(1)) || { echo "FAILED: ty in $(1)"; exit 1; }; \
 	echo "=== ty completed successfully for $(1) ===";
 endef
 

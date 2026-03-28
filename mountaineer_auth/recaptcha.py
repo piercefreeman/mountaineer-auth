@@ -1,29 +1,29 @@
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any
+from importlib import import_module
+from typing import Any, cast
 
 from fastapi import Depends
-
-if TYPE_CHECKING:
-    from google.cloud.recaptchaenterprise_v1 import (
-        RecaptchaEnterpriseServiceAsyncClient,
-    )
-else:
-    RecaptchaEnterpriseServiceAsyncClient = None
-
-try:
-    from google.cloud.recaptchaenterprise_v1 import (
-        RecaptchaEnterpriseServiceAsyncClient,
-    )
-
-    RECAPTCHA_IS_AVAILABLE = True
-except ImportError:
-    RECAPTCHA_IS_AVAILABLE = False
 
 from mountaineer import CoreDependencies
 from mountaineer.dependencies import get_function_dependencies
 
 from mountaineer_auth import dependencies as AuthDependencies
 from mountaineer_auth.config import AuthConfig
+
+RecaptchaEnterpriseServiceAsyncClient = Any
+
+try:
+    recaptcha_module = cast(
+        Any,
+        import_module("google.cloud.recaptchaenterprise_v1"),
+    )
+    RecaptchaEnterpriseServiceAsyncClient = (
+        recaptcha_module.RecaptchaEnterpriseServiceAsyncClient
+    )
+
+    RECAPTCHA_IS_AVAILABLE = True
+except ImportError:
+    RECAPTCHA_IS_AVAILABLE = False
 
 
 @dataclass

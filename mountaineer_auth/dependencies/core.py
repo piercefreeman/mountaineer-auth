@@ -1,6 +1,7 @@
 from base64 import b64decode
+from importlib import import_module
 from json import loads as json_loads
-from typing import TYPE_CHECKING
+from typing import Any, cast
 from uuid import UUID
 from warnings import filterwarnings
 
@@ -16,26 +17,21 @@ from mountaineer_auth.exceptions import UnauthorizedError
 from mountaineer_auth.logging import LOGGER
 from mountaineer_auth.models import UserAuthMixin
 
-if TYPE_CHECKING:
-    # Workaround to https://github.com/googleapis/google-cloud-python/issues/12560
-    filterwarnings("ignore", category=DeprecationWarning, message=r".*PyType_Spec.*")
-
-    from google.cloud.recaptchaenterprise_v1 import (
-        RecaptchaEnterpriseServiceAsyncClient,
-    )
-    from google.oauth2 import service_account
-else:
-    RecaptchaEnterpriseServiceAsyncClient = None
-    service_account = None
+RecaptchaEnterpriseServiceAsyncClient = Any
+service_account: Any = None
 
 try:
     # Workaround to https://github.com/googleapis/google-cloud-python/issues/12560
     filterwarnings("ignore", category=DeprecationWarning, message=r".*PyType_Spec.*")
 
-    from google.cloud.recaptchaenterprise_v1 import (
-        RecaptchaEnterpriseServiceAsyncClient,
+    recaptcha_module = cast(
+        Any,
+        import_module("google.cloud.recaptchaenterprise_v1"),
     )
-    from google.oauth2 import service_account
+    RecaptchaEnterpriseServiceAsyncClient = (
+        recaptcha_module.RecaptchaEnterpriseServiceAsyncClient
+    )
+    service_account = cast(Any, import_module("google.oauth2.service_account"))
 
     RECAPTCHA_IS_AVAILABLE = True
 except ImportError:
@@ -210,4 +206,4 @@ async def get_recaptcha_client(
     json_key = json_loads(b64decode(config.RECAPTCHA.gcp_service).decode())
 
     auth = service_account.Credentials.from_service_account_info(json_key)
-    return RecaptchaEnterpriseServiceAsyncClient(credentials=auth)
+    return cast(Any, RecaptchaEnterpriseServiceAsyncClient)(credentials=auth)

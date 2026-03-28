@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi import Depends
 from iceaxe import DBConnection, select
 from iceaxe.mountaineer import DatabaseDependencies
-from mountaineer_auth import EmailControllerBase, EmailMetadata, EmailRenderBase
+from mountaineer_email import EmailControllerBase, EmailMetadata, EmailRenderBase
 from pydantic import BaseModel
 
 from mountaineer import CoreDependencies, LinkAttribute, ManagedViewPath, Metadata
@@ -62,7 +62,6 @@ class VerifyEmailController(EmailControllerBase[VerifyEmailRequest]):
             ),
             email_metadata=EmailMetadata(
                 subject="Verify your email",
-                to_email=user.email,
             ),
             metadata=Metadata(
                 links=[
