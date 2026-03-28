@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  AuthLayout,
   ButtonComponent,
   ErrorComponent,
   InputComponent,
@@ -20,72 +21,76 @@ const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
 
   return (
-    <div className="mx-auto max-w-md px-4">
-      <h2 className="mt-6 text-center text-3xl font-bold tracking-tight">
-        Forgot password
-      </h2>
-      <div className="mt-2 text-center text-sm text-gray-600">
-        If you remembed it,{" "}
-        <LinkComponent href={serverState.linkGenerator.loginController({})}>
-          log back in.
-        </LinkComponent>
-      </div>
-      <div className="mt-8 rounded bg-white p-8 shadow">
-        <form className="space-y-4">
-          {forgotPasswordError && (
-            <ErrorComponent>
-              <span>{forgotPasswordError}</span>
-            </ErrorComponent>
-          )}
-          {serverState.success && (
-            <SuccessComponent>
-              <span>Check your email for a link to reset your password.</span>
-            </SuccessComponent>
-          )}
+    <AuthLayout
+      title="Reset your password"
+      subtitle={
+        <>
+          Remember your password?{" "}
+          <LinkComponent href={serverState.linkGenerator.loginController({})}>
+            Sign in
+          </LinkComponent>
+        </>
+      }
+    >
+      <form className="grid grid-cols-1 gap-6">
+        {forgotPasswordError && (
+          <ErrorComponent>
+            <span>{forgotPasswordError}</span>
+          </ErrorComponent>
+        )}
+        {serverState.success && (
+          <SuccessComponent>
+            Check your email for a link to reset your password.
+          </SuccessComponent>
+        )}
+        <div>
           <InputComponent
+            label="Email"
             type="email"
+            autoComplete="email"
             onChange={(e) => {
               setEmail(e.target.value);
             }}
-            placeholder="Email"
+            placeholder="you@example.com"
             value={email}
           />
-          <ButtonComponent
-            type="submit"
-            disabled={isLoadingSubmit}
-            onClick={async (e) => {
-              // Disable default form submission
-              e.preventDefault();
+          <p className="mt-2 text-xs/5 text-zinc-500">
+            We&apos;ll send you a link to reset your password.
+          </p>
+        </div>
+        <ButtonComponent
+          type="submit"
+          disabled={isLoadingSubmit}
+          onClick={async (e) => {
+            e.preventDefault();
+            setIsLoadingSubmit(true);
 
-              setIsLoadingSubmit(true);
-
-              try {
-                await serverState.forgot_password({
-                  requestBody: {
-                    username: email,
-                  },
+            try {
+              await serverState.forgot_password({
+                requestBody: {
+                  username: email,
+                },
+              });
+              setForgotPasswordError(undefined);
+              window.location.href =
+                serverState.linkGenerator.forgotPasswordController({
+                  success: true,
                 });
-                setForgotPasswordError(undefined);
-                window.location.href =
-                  serverState.linkGenerator.forgotPasswordController({
-                    success: true,
-                  });
-              } catch (e) {
-                if (e instanceof RequestValidationError) {
-                  setForgotPasswordError(e.body.errors[0].message);
-                } else {
-                  throw e;
-                }
-              } finally {
-                setIsLoadingSubmit(false);
+            } catch (e) {
+              if (e instanceof RequestValidationError) {
+                setForgotPasswordError(e.body.errors[0].message);
+              } else {
+                throw e;
               }
-            }}
-          >
-            Reset password
-          </ButtonComponent>
-        </form>
-      </div>
-    </div>
+            } finally {
+              setIsLoadingSubmit(false);
+            }
+          }}
+        >
+          Send reset link
+        </ButtonComponent>
+      </form>
+    </AuthLayout>
   );
 };
 
