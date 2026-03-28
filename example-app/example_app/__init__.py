@@ -1,0 +1,3 @@
+from example_app.fastapi_compat import patch_fastapi_model_field_type
+
+patch_fastapi_model_field_type()

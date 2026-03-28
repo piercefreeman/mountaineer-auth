@@ -60,8 +60,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         run: uv run .github/scripts/update_version.py ${{ github.ref_name }}
 
-      - name: Build email artifacts
-        run: uv run build-email
+      - name: Build auth views
+        run: uv run build-auth
 
       - name: Build sdist and wheel
         run: uv build
