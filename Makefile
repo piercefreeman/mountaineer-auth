@@ -1,10 +1,11 @@
-.PHONY: lint ci-lint lint-ruff lint-ty test test-db-up test-db-down help
+.PHONY: lint ci-lint lint-biome lint-ruff lint-ty test test-db-up test-db-down help
 
 # Default target
 all: lint
 
 # Package directory
 PKG_DIR := ./mountaineer_auth/
+VIEWS_DIR := ./mountaineer_auth/views/
 TEST_COMPOSE_FILE := docker-compose.test.yml
 
 # Define a function to run ruff on a specific directory
@@ -37,9 +38,24 @@ define run_ty
 	echo "=== ty completed successfully for $(1) ===";
 endef
 
+# Define a function to run biome on the frontend source directories
+define run_biome
+	@echo "\n=== Running biome on $(VIEWS_DIR) ==="; \
+	(cd $(VIEWS_DIR) && npm exec -- biome check --write package.json postcss.config.mjs $$(find auth emails -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' \) ! -path '*/_server/*')) || { echo "FAILED: biome in $(VIEWS_DIR)"; exit 1; }; \
+	echo "=== biome completed successfully for $(VIEWS_DIR) ===";
+endef
+
+# Define a function to run biome in CI mode (check only, no fixes)
+define run_biome_ci
+	@echo "\n=== Running biome (validation only) on $(VIEWS_DIR) ==="; \
+	(cd $(VIEWS_DIR) && npm exec -- biome check package.json postcss.config.mjs $$(find auth emails -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' \) ! -path '*/_server/*')) || { echo "FAILED: biome in $(VIEWS_DIR)"; exit 1; }; \
+	echo "=== biome validation completed successfully for $(VIEWS_DIR) ===";
+endef
+
 # Main lint target (with fixes)
 lint:
 	@echo "=== Linting mountaineer-auth ==="
+	$(call run_biome)
 	$(call run_ruff,$(PKG_DIR))
 	$(call run_ty,$(PKG_DIR))
 	@echo "\n=== All linters completed successfully ==="
@@ -47,11 +63,16 @@ lint:
 # CI lint target (validation only, no fixes)
 ci-lint:
 	@echo "=== CI Linting mountaineer-auth (validation only) ==="
+	$(call run_biome_ci)
 	$(call run_ruff_ci,$(PKG_DIR))
 	$(call run_ty,$(PKG_DIR))
 	@echo "\n=== All linters completed successfully ==="
 
 # Tool-specific targets
+lint-biome:
+	@echo "=== Running biome ==="
+	$(call run_biome)
+
 lint-ruff:
 	@echo "=== Running ruff ==="
 	$(call run_ruff,$(PKG_DIR))
@@ -87,6 +108,7 @@ help:
 	@echo " "
 	@echo "  lint            - Run all linters (with fixes)"
 	@echo "  ci-lint         - Run all linters (validation only, no fixes)"
+	@echo "  lint-biome      - Run biome on the frontend auth/email views"
 	@echo "  lint-ruff       - Run ruff only (with fixes)"
 	@echo "  lint-ty         - Run ty type checker only"
 	@echo " "

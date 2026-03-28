@@ -1,0 +1,45 @@
+[project]
+name = "example_app"
+version = "0.1.0"
+description = ""
+authors = [{ name = "", email = "pierce@freeman.vc" }]
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+
+dependencies = [
+    "mountaineer==0.11.0",
+    "iceaxe>=0.10.0",
+    "mountaineer-auth",
+]
+
+
+[dependency-groups]
+dev = [
+    "asyncpg>=0.30.0",
+    "pyright>=1.1.400",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+    "ruff>=0.11.9",
+]
+
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-data]
+example_app = [
+    "views/**/*"
+]
+
+[project.scripts]
+runserver = "example_app.cli:runserver"
+watch = "example_app.cli:watch"
+build = "example_app.cli:build"
+createdb = "example_app.cli:createdb"
+
+[tool.uv.sources]
+mountaineer-auth = { path = "..", editable = true }
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]

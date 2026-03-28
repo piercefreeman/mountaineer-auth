@@ -63,3 +63,11 @@ controller.app.exception_handler(UnauthorizedError)(handle_unauthorized)
 ## Testing
 
 `make test` starts a disposable Postgres instance from `docker-compose.test.yml`, runs the pytest suite, and tears the database down afterwards.
+
+## Development
+
+If you update the admin UI files, you'll need to build the artifacts for inclusion in the published library. We do this automatically when distributing through CI, so this is just when you're making changes and testing locally:
+
+```bash
+uv run build-auth
+```
