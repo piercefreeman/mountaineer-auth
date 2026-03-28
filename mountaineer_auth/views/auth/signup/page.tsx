@@ -5,7 +5,6 @@ import {
   InputComponent,
   LinkComponent,
 } from "../components";
-import { useRecaptcha } from "../recaptcha";
 import { RequestValidationError, SignupInvalid } from "./_server/actions";
 import { useServer } from "./_server/useServer";
 
@@ -18,14 +17,6 @@ const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  const recapchaKey =
-    serverState.recaptcha_enabled && serverState.recaptcha_client_key
-      ? useRecaptcha(
-          serverState.recaptcha_client_key,
-          serverState.recaptcha_action,
-        )
-      : null;
 
   return (
     <div className="mx-auto max-w-md px-4">
@@ -84,7 +75,6 @@ const SignupPage = () => {
                 requestBody: {
                   username: email,
                   password: password,
-                  recaptcha_key: recapchaKey,
                 },
               });
               setSignupError(undefined);
@@ -108,22 +98,6 @@ const SignupPage = () => {
           Register
         </ButtonComponent>
       </form>
-      {serverState.recaptcha_enabled && (
-        <div className="mt-4 px-4 text-xs text-gray-400">
-          User registration is protected by reCAPTCHA. Google's{" "}
-          <a
-            className="text-gray-500"
-            href="https://policies.google.com/privacy"
-          >
-            Privacy Policy
-          </a>{" "}
-          and{" "}
-          <a className="text-gray-500" href="https://policies.google.com/terms">
-            Terms of Service
-          </a>{" "}
-          apply.
-        </div>
-      )}
     </div>
   );
 };

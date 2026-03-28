@@ -1,9 +1,4 @@
-from base64 import b64decode
-from importlib import import_module
-from json import loads as json_loads
-from typing import Any, cast
 from uuid import UUID
-from warnings import filterwarnings
 
 from fastapi import Depends, HTTPException, Request, status
 from iceaxe import DBConnection, select
@@ -16,26 +11,6 @@ from mountaineer_auth.config import AuthConfig
 from mountaineer_auth.exceptions import UnauthorizedError
 from mountaineer_auth.logging import LOGGER
 from mountaineer_auth.models import UserAuthMixin
-
-RecaptchaEnterpriseServiceAsyncClient = Any
-service_account: Any = None
-
-try:
-    # Workaround to https://github.com/googleapis/google-cloud-python/issues/12560
-    filterwarnings("ignore", category=DeprecationWarning, message=r".*PyType_Spec.*")
-
-    recaptcha_module = cast(
-        Any,
-        import_module("google.cloud.recaptchaenterprise_v1"),
-    )
-    RecaptchaEnterpriseServiceAsyncClient = (
-        recaptcha_module.RecaptchaEnterpriseServiceAsyncClient
-    )
-    service_account = cast(Any, import_module("google.oauth2.service_account"))
-
-    RECAPTCHA_IS_AVAILABLE = True
-except ImportError:
-    RECAPTCHA_IS_AVAILABLE = False
 
 
 def peek_user_id(
@@ -174,36 +149,3 @@ def access_token_cookie_key() -> str:
     :return: The cookie key name 'access_key'
     """
     return "access_key"
-
-
-# Even though there isn't any async code contained in this function, it needs to be
-# marked as sync because the RecaptchaEnterpriseServiceAsyncClient() on initialization
-# will attempt an output validation call. It needs to be running in the desired
-# async loop (which fastapi will do if it's async) but not in a thread pool (which
-# will be the spawner if this is a regular def)
-# TODO: Add a test validation for this case
-async def get_recaptcha_client(
-    config: AuthConfig = Depends(CoreDependencies.get_config_with_type(AuthConfig)),
-) -> RecaptchaEnterpriseServiceAsyncClient:
-    """
-    Creates and returns a configured Google Recaptcha Enterprise client.
-    Must be called as an async function due to client initialization requirements.
-
-    :param config: Auth configuration containing Recaptcha settings and GCP credentials
-    :return: Configured Recaptcha client
-    :raises ImportError: If google-cloud-recaptcha-enterprise package is not installed
-    :raises ValueError: If RECAPTCHA configuration is not set in auth config
-    """
-    if not RECAPTCHA_IS_AVAILABLE:
-        raise ImportError(
-            "Recaptcha not available, install with `pip install google-cloud-recaptcha-enterprise`"
-        )
-
-    if not config.RECAPTCHA:
-        raise ValueError("RECAPTCHA not set")
-
-    # The service config is encoded as a base64 string
-    json_key = json_loads(b64decode(config.RECAPTCHA.gcp_service).decode())
-
-    auth = service_account.Credentials.from_service_account_info(json_key)
-    return cast(Any, RecaptchaEnterpriseServiceAsyncClient)(credentials=auth)
