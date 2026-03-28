@@ -1,6 +1,5 @@
 from .core import (
     access_token_cookie_key as access_token_cookie_key,
-    get_recaptcha_client as get_recaptcha_client,
     peek_user as peek_user,
     peek_user_id as peek_user_id,
     require_admin_user as require_admin_user,

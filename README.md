@@ -1,16 +1,17 @@
 # mountaineer-auth
 
-Basic authorization utilities.
+mountaineer-auth is a opinionated login package you can use to get up and running asap with a [Mountaineer](https://github.com/piercefreeman/mountaineer) webapp. It's secure and has been used in the wild for the last two years.
 
-1. `User` Base Model
-2. Sign up page with email and password
-3. Login page with email and password
-4. JWT token generation and validation
-5. Optional recaptcha support on user registration
+Each _user_ registers with their email and password. _You_ handle appropriate authorization on your routes to determine what user is allowed where. We handle all lifecycle: login, signup, password reset, JWT tokens, etc.
+
+- Beautifully designed registration and login flows
+- First-class primitive for admin users
+- Dependency injection functions to quickly validate users before they hit your routes
+- All self-hosted for fast performance on your infra
 
 ## Getting Started
 
-Add the models to a file like `models/auth.py`:
+This guide assumes that you're using the full `mountaineer` ecosystem: `iceaxe` for database models, `waymark` for backend workflows, `mountaineer-cloud` for email sending, etc. Add the models to a file like `models/auth.py`:
 
 ```python
 from mountaineer_auth.models import (
@@ -58,3 +59,7 @@ async def handle_unauthorized(request: Request, exc: UnauthorizedError):
 
 controller.app.exception_handler(UnauthorizedError)(handle_unauthorized)
 ```
+
+## Testing
+
+`make test` starts a disposable Postgres instance from `docker-compose.test.yml`, runs the pytest suite, and tears the database down afterwards.

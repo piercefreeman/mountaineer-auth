@@ -1,10 +1,11 @@
-.PHONY: lint ci-lint lint-ruff lint-ty test help
+.PHONY: lint ci-lint lint-ruff lint-ty test test-db-up test-db-down help
 
 # Default target
 all: lint
 
 # Package directory
 PKG_DIR := ./mountaineer_auth/
+TEST_COMPOSE_FILE := docker-compose.test.yml
 
 # Define a function to run ruff on a specific directory
 # Usage: $(call run_ruff,<directory>)
@@ -61,9 +62,24 @@ lint-ty:
 
 # Test target
 test:
-	@echo "=== Running tests ==="
-	(uv run pytest -vvv $(PKG_DIR)) || { echo "FAILED: tests"; exit 1; }
+	@set -e; \
+	cleanup() { docker compose -f $(TEST_COMPOSE_FILE) down -v --remove-orphans >/dev/null 2>&1 || true; }; \
+	trap cleanup EXIT; \
+	echo "=== Starting test database ==="; \
+	docker compose -f $(TEST_COMPOSE_FILE) up -d --wait; \
+	echo "=== Running tests ==="; \
+	uv run pytest -vvv $(PKG_DIR)
 	@echo "=== Tests completed successfully ==="
+
+test-db-up:
+	@echo "=== Starting test database ==="
+	docker compose -f $(TEST_COMPOSE_FILE) up -d --wait
+	@echo "=== Test database ready ==="
+
+test-db-down:
+	@echo "=== Stopping test database ==="
+	docker compose -f $(TEST_COMPOSE_FILE) down -v --remove-orphans
+	@echo "=== Test database stopped ==="
 
 # Show help
 help:
@@ -74,4 +90,6 @@ help:
 	@echo "  lint-ruff       - Run ruff only (with fixes)"
 	@echo "  lint-ty         - Run ty type checker only"
 	@echo " "
-	@echo "  test            - Run tests"
+	@echo "  test            - Start the test database, run tests, then tear it down"
+	@echo "  test-db-up      - Start the Postgres test database"
+	@echo "  test-db-down    - Stop and remove the Postgres test database"

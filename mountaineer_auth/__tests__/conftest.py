@@ -7,7 +7,6 @@ from iceaxe.schemas.cli import create_all
 from mountaineer_email.registry import clear_email_registry as _clear_email_registry
 
 from mountaineer_auth.__tests__ import conf_models as models
-from mountaineer_auth.config import AuthRecaptchaConfig
 
 
 @pytest.fixture(autouse=True)
@@ -33,12 +32,6 @@ def config() -> models.AppConfig:
     return models.AppConfig(
         **common_db.model_dump(),
         API_SECRET_KEY="test-api-secret",
-        RECAPTCHA_ENABLED=True,
-        RECAPTCHA=AuthRecaptchaConfig(
-            gcp_service="test-service",
-            gcp_project_id="test-project-id",
-            gcp_client_key="test-client-key",
-        ),
         AUTH_USER=models.User,
         AUTH_VERIFICATION_STATE=models.VerificationState,
     )

@@ -2,7 +2,6 @@ from mountaineer_auth import dependencies as AuthDependencies  # noqa: F401
 from mountaineer_auth.config import (
     AuthConfig as AuthConfig,
     AuthEmailConfig as AuthEmailConfig,
-    AuthRecaptchaConfig as AuthRecaptchaConfig,
 )
 from mountaineer_auth.controllers.forgot_password_controller import (
     ForgotPasswordController as ForgotPasswordController,

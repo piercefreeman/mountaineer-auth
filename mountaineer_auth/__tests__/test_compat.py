@@ -13,26 +13,16 @@ class TestSendEmailWorkflow:
     @pytest.mark.asyncio
     async def test_raises_import_error_when_email_not_installed(self):
         """Test that ImportError is raised when mountaineer-auth is not installed."""
-        with patch.dict("sys.modules", {"mountaineer_auth": None}):
-            # Force re-import of the compat module
-            import importlib
+        from mountaineer_auth.compat import send_email_workflow
 
-            import mountaineer_auth.compat
+        mock_controller = MagicMock()
+        mock_input = MagicMock()
 
-            importlib.reload(mountaineer_auth.compat)
-
-            mock_controller = MagicMock()
-            mock_input = MagicMock()
-
+        with patch("mountaineer_auth.compat.import_module", side_effect=ImportError()):
             with pytest.raises(ImportError) as exc_info:
-                await mountaineer_auth.compat.send_email_workflow(
-                    mock_controller, mock_input
-                )
+                await send_email_workflow(mock_controller, mock_input)
 
-            assert "mountaineer-auth is required" in str(exc_info.value)
-
-            # Reload to restore original behavior
-            importlib.reload(mountaineer_auth.compat)
+        assert "mountaineer-auth is required" in str(exc_info.value)
 
     @pytest.mark.asyncio
     async def test_sends_email_via_workflow(self):
@@ -49,23 +39,25 @@ class TestSendEmailWorkflow:
 
         mock_workflow_instance = MagicMock()
         mock_workflow_instance.run = AsyncMock()
+        mock_send_email_input_cls = MagicMock()
+        mock_send_email_input_cls.from_email_input.return_value = mock_send_email_input
+        mock_send_email_cls = MagicMock(return_value=mock_workflow_instance)
 
         with patch(
-            "mountaineer_auth.SendEmailInput.from_email_input",
-            return_value=mock_send_email_input,
+            "mountaineer_auth.compat._get_email_workflow_types",
+            return_value=(mock_send_email_cls, mock_send_email_input_cls),
         ) as mock_from_email_input:
-            with patch(
-                "mountaineer_auth.SendEmail", return_value=mock_workflow_instance
-            ):
-                await send_email_workflow(mock_controller, mock_input)
+            await send_email_workflow(mock_controller, mock_input)
 
-                # Verify the email input was created correctly
-                mock_from_email_input.assert_called_once_with(
-                    mock_controller, email_input=mock_input
-                )
+            mock_from_email_input.assert_called_once_with()
 
-                # Verify the workflow was run
-                mock_workflow_instance.run.assert_called_once_with(
-                    email_input=mock_send_email_input.email_input,
-                    registry_id=mock_send_email_input.registry_id,
-                )
+            # Verify the email input was created correctly
+            mock_send_email_input_cls.from_email_input.assert_called_once_with(
+                mock_controller, email_input=mock_input
+            )
+
+            # Verify the workflow was run
+            mock_workflow_instance.run.assert_called_once_with(
+                email_input=mock_send_email_input.email_input,
+                registry_id=mock_send_email_input.registry_id,
+            )
