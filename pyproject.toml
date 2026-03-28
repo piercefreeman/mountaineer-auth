@@ -16,7 +16,7 @@ dependencies = [
     # unpinned dependencies to allow flexibility
     "mountaineer",
     "iceaxe",
-    "mountaineer-cloud",
+    "mountaineer-cloud>=0.1.2",
     "mountaineer-email",
     "waymark"
 

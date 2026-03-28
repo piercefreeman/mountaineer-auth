@@ -9,10 +9,12 @@ from mountaineer import AppController, Depends
 from mountaineer.client_compiler.postcss import PostCSSBundler
 from mountaineer.dependencies import get_function_dependencies
 from mountaineer.render import LinkAttribute, Metadata
+from mountaineer_email.controllers import EmailDetailController, EmailHomeController
 
 from example_app.bootstrap import bootstrap_database
 from example_app.config import AppConfig
 from example_app.controllers import DetailController, HomeController
+from example_app.emails import WelcomePreviewEmail
 from mountaineer_auth import (
     ForgotPasswordController,
     LoginController,
@@ -20,6 +22,10 @@ from mountaineer_auth import (
     SignupController,
     UnauthorizedError,
     VerifyController,
+)
+from mountaineer_auth.emails import (
+    ForgotPasswordEmailController,
+    VerifyEmailController,
 )
 
 app_config = AppConfig()
@@ -38,10 +44,15 @@ controller = AppController(
 controller.register(HomeController())
 controller.register(DetailController())
 controller.register(ForgotPasswordController())
+controller.register(ForgotPasswordEmailController())
 controller.register(LoginController(post_login_redirect="/"))
 controller.register(SignupController(post_signup_redirect="/"))
 controller.register(LogoutController(post_logout_redirect="/"))
 controller.register(VerifyController())
+controller.register(VerifyEmailController())
+controller.register(WelcomePreviewEmail())
+controller.register(EmailHomeController())
+controller.register(EmailDetailController())
 
 
 @controller.app.on_event("startup")

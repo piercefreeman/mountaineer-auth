@@ -1,4 +1,4 @@
-import { Button } from "@react-email/components";
+import { Button, Text } from "@react-email/components";
 import CommonWrapper from "../common_wrapper";
 import { useServer } from "./_server/useServer";
 
@@ -15,24 +15,30 @@ const Page = () => {
 	const verificationUrl = `${serverState.verification_host}/${relativeVerification}`;
 
 	return (
-		<CommonWrapper title="Reset Password" config={serverState.common_config}>
-			<div>
-				{serverState.user_name && <div>Hi {serverState.user_name}!</div>}
-				<div className="mt-4">
-					We received a password reset request for{" "}
-					{serverState.common_config.project_name}. If this wasn't you, you can
-					safely ignore this email. If it was you, this link expires in 15
-					minutes.
-				</div>
-				<div className="mt-4">
-					<Button
-						className="box-border w-full rounded-[8px] bg-blue-500 px-[12px] py-[12px] text-center font-semibold text-white"
-						href={verificationUrl}
-					>
-						Reset Email
-					</Button>
-				</div>
-			</div>
+		<CommonWrapper
+			title="Reset your password"
+			config={serverState.common_config}
+		>
+			{serverState.user_name && (
+				<Text className="m-0 text-sm leading-6 text-zinc-950">
+					Hi {serverState.user_name},
+				</Text>
+			)}
+			<Text className="m-0 mt-2 text-sm leading-6 text-zinc-500">
+				We received a password reset request for your{" "}
+				{serverState.common_config.project_name} account. Click the button below
+				to choose a new password. This link expires in 15 minutes.
+			</Text>
+			<Button
+				className="mt-6 box-border inline-flex rounded-lg bg-zinc-950 px-5 py-2.5 text-center text-sm font-semibold text-white"
+				href={verificationUrl}
+			>
+				Reset password
+			</Button>
+			<Text className="m-0 mt-6 text-xs leading-5 text-zinc-400">
+				If you didn&apos;t request a password reset, you can safely ignore this
+				email.
+			</Text>
 		</CommonWrapper>
 	);
 };

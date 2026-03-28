@@ -23,6 +23,10 @@ Then open `http://localhost:3000/`.
 The web app bootstraps its schema on first startup, seeds a default detail
 record, and lets you sign up before visiting the protected page.
 
+Email previews are available in the admin console at
+`http://localhost:3000/admin/email/`, including the auth emails and the example
+welcome preview.
+
 ## Local Development
 
 ```bash

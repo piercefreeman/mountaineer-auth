@@ -10,6 +10,7 @@ dependencies = [
     "mountaineer==0.11.0",
     "iceaxe>=0.10.0",
     "mountaineer-auth",
+    "mountaineer-email",
 ]
 
 

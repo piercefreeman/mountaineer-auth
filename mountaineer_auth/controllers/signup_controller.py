@@ -158,6 +158,10 @@ class SignupController(ControllerBase):
                     verification_host=auth_config.AUTH_EMAIL.server_host,
                     user_id=new_user.id,
                 ),
+                to_email=new_user.email,
+                from_email=str(auth_config.AUTH_EMAIL.from_email),
+                from_name=auth_config.AUTH_EMAIL.from_name
+                or auth_config.AUTH_EMAIL.project_name,
             )
 
         response = JSONResponse(content=[], status_code=status.HTTP_200_OK)

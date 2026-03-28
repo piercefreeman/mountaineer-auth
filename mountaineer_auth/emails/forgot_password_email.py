@@ -1,3 +1,4 @@
+from typing import ClassVar
 from uuid import UUID
 
 from fastapi import Depends
@@ -28,6 +29,8 @@ class ForgotPasswordEmailRender(EmailRenderBase):
 
 
 class ForgotPasswordEmailController(EmailControllerBase[ForgotPasswordEmailRequest]):
+    workflow_label: ClassVar[str] = "forgot_password"
+
     view_path = (
         ManagedViewPath.from_view_root(get_auth_view_path(""), package_root_link=None)
         / "emails/forgot_password/page.tsx"

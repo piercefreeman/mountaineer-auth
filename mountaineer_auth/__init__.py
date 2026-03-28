@@ -20,3 +20,11 @@ from mountaineer_auth.controllers.verify_controller import (
 )
 from mountaineer_auth.exceptions import UnauthorizedError as UnauthorizedError
 from mountaineer_auth.models import UserAuthMixin as UserAuthMixin
+from mountaineer_auth.workflows import (
+    SendAuthEmail as SendAuthEmail,
+    SendAuthEmailInput as SendAuthEmailInput,
+    SendAuthEmailResult as SendAuthEmailResult,
+)
+
+SendEmail = SendAuthEmail
+SendEmailInput = SendAuthEmailInput

@@ -4,6 +4,7 @@ import {
 	Container,
 	Font,
 	Head,
+	Hr,
 	Html,
 	Img,
 	Link,
@@ -37,55 +38,54 @@ const CommonWrapper = ({
 					<Font
 						fontFamily="system-ui"
 						fallbackFontFamily="Verdana"
-						webFont={{
-							url: "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2",
-							format: "woff2",
-						}}
 						fontWeight={400}
 						fontStyle="normal"
 					/>
 				</Head>
-				<Body className="w-full">
-					<Container className="mx-auto w-[580px] max-w-[580px]">
-						<Section>
-							{/* Header image */}
-							{config.header_image && (
-								<Row>
-									<Column align="center">
-										<Img
-											src={config.header_image}
-											alt={config.project_name}
-											width="40"
-											height="40"
-											className="mx-auto"
-										/>
-									</Column>
-								</Row>
+				<Body className="mx-auto my-0 bg-white font-sans">
+					<Container className="mx-auto w-[520px] max-w-[520px] px-6 py-10">
+						{/* Header */}
+						<Section className="text-center">
+							{config.header_image ? (
+								<Img
+									src={config.header_image}
+									alt={config.project_name}
+									width="36"
+									height="36"
+									className="mx-auto"
+								/>
+							) : (
+								<Text className="m-0 text-base font-semibold tracking-tight text-zinc-950">
+									{config.project_name}
+								</Text>
 							)}
+						</Section>
 
-							{/* Content container */}
-							<Section className="mt-4 w-full text-sm text-gray-800">
-								<Row>
-									<Column className="p-4">
-										<Text className="text-lg font-bold">{title}</Text>
-										{children}
-									</Column>
-								</Row>
-							</Section>
+						{/* Divider */}
+						<Hr className="mx-0 my-6 border-zinc-950/10" />
 
-							{/* Footer */}
-							<Section className="mt-4 w-full text-center text-xs text-slate-400">
-								<Row>
-									<Column className="py-0">
-										<Text className="text-xs">
-											Sent by {config.project_name}, {config.project_address}.{" "}
-											<Link href={config.unsubscribe_url} className="underline">
-												Unsubscribe
-											</Link>
-										</Text>
-									</Column>
-								</Row>
-							</Section>
+						{/* Content */}
+						<Section>
+							<Text className="m-0 text-xl font-semibold tracking-tight text-zinc-950">
+								{title}
+							</Text>
+							<Section className="mt-4">{children}</Section>
+						</Section>
+
+						{/* Footer */}
+						<Hr className="mx-0 mb-6 mt-10 border-zinc-950/10" />
+						<Section>
+							<Text className="m-0 text-xs leading-5 text-zinc-400">
+								Sent by {config.project_name}, {config.project_address}.
+							</Text>
+							<Text className="m-0 mt-1 text-xs leading-5 text-zinc-400">
+								<Link
+									href={config.unsubscribe_url}
+									className="text-zinc-400 underline decoration-zinc-400/50 underline-offset-2 transition-colors"
+								>
+									Unsubscribe
+								</Link>
+							</Text>
 						</Section>
 					</Container>
 				</Body>
