@@ -12,8 +12,8 @@ class TestSendEmailWorkflow:
 
     @pytest.mark.asyncio
     async def test_raises_import_error_when_email_not_installed(self):
-        """Test that ImportError is raised when mountaineer-email is not installed."""
-        with patch.dict("sys.modules", {"mountaineer_email": None}):
+        """Test that ImportError is raised when mountaineer-auth is not installed."""
+        with patch.dict("sys.modules", {"mountaineer_auth": None}):
             # Force re-import of the compat module
             import importlib
 
@@ -29,7 +29,7 @@ class TestSendEmailWorkflow:
                     mock_controller, mock_input
                 )
 
-            assert "mountaineer-email is required" in str(exc_info.value)
+            assert "mountaineer-auth is required" in str(exc_info.value)
 
             # Reload to restore original behavior
             importlib.reload(mountaineer_auth.compat)
@@ -51,11 +51,11 @@ class TestSendEmailWorkflow:
         mock_workflow_instance.run = AsyncMock()
 
         with patch(
-            "mountaineer_email.SendEmailInput.from_email_input",
+            "mountaineer_auth.SendEmailInput.from_email_input",
             return_value=mock_send_email_input,
         ) as mock_from_email_input:
             with patch(
-                "mountaineer_email.SendEmail", return_value=mock_workflow_instance
+                "mountaineer_auth.SendEmail", return_value=mock_workflow_instance
             ):
                 await send_email_workflow(mock_controller, mock_input)
 

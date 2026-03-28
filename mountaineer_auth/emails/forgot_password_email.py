@@ -62,7 +62,6 @@ class ForgotPasswordEmailController(EmailControllerBase[ForgotPasswordEmailReque
             ),
             email_metadata=EmailMetadata(
                 subject="Password reset request",
-                to_email=user.email,
             ),
             metadata=Metadata(
                 links=[

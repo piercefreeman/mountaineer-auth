@@ -62,7 +62,6 @@ class VerifyEmailController(EmailControllerBase[VerifyEmailRequest]):
             ),
             email_metadata=EmailMetadata(
                 subject="Verify your email",
-                to_email=user.email,
             ),
             metadata=Metadata(
                 links=[
