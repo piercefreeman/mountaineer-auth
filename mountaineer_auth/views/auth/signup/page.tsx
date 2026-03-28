@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  AuthLayout,
   ButtonComponent,
   ErrorComponent,
   InputComponent,
@@ -19,50 +20,55 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   return (
-    <div className="mx-auto max-w-md px-4">
-      <h2 className="mt-6 text-center text-3xl font-bold tracking-tight">
-        Create a new account
-      </h2>
-      <div className="mt-2 text-center text-sm text-gray-600">
-        If you already have one, login{" "}
-        <LinkComponent href={serverState.linkGenerator.loginController({})}>
-          here.
-        </LinkComponent>
-      </div>
-      <form className="mt-8 space-y-4 rounded bg-white p-8 shadow">
+    <AuthLayout
+      title="Create your account"
+      subtitle={
+        <>
+          Already have an account?{" "}
+          <LinkComponent href={serverState.linkGenerator.loginController({})}>
+            Sign in
+          </LinkComponent>
+        </>
+      }
+    >
+      <form className="grid grid-cols-1 gap-6">
         {signupError && (
           <ErrorComponent>
             <span>{signupError}</span>
           </ErrorComponent>
         )}
         <InputComponent
+          label="Email"
           type="email"
+          autoComplete="email"
           onChange={(e) => {
             setEmail(e.target.value);
           }}
-          placeholder="Email"
+          placeholder="you@example.com"
           value={email}
         />
         <InputComponent
+          label="Password"
           type="password"
+          autoComplete="new-password"
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          placeholder="Create a password"
           value={password}
         />
         <InputComponent
+          label="Confirm password"
           type="password"
+          autoComplete="new-password"
           onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="Confirm Password"
+          placeholder="Confirm your password"
           value={confirmPassword}
         />
         <ButtonComponent
           type="submit"
           disabled={isLoadingSubmit}
           onClick={async (e) => {
-            // Disable default form submission
             e.preventDefault();
 
-            // Local validation
             if (password !== confirmPassword) {
               setSignupError("Passwords do not match.");
               return;
@@ -71,7 +77,7 @@ const SignupPage = () => {
             setIsLoadingSubmit(true);
 
             try {
-              const signupResponse = await serverState.signup({
+              await serverState.signup({
                 requestBody: {
                   username: email,
                   password: password,
@@ -95,10 +101,10 @@ const SignupPage = () => {
             }
           }}
         >
-          Register
+          Create account
         </ButtonComponent>
       </form>
-    </div>
+    </AuthLayout>
   );
 };
 

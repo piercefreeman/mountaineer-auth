@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import {
+  AuthLayout,
   ButtonComponent,
+  Divider,
   ErrorComponent,
   InputComponent,
   LinkComponent,
@@ -18,87 +20,91 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
 
   return (
-    <div className="mx-auto max-w-md px-4">
-      <h2 className="mt-6 text-center text-3xl font-bold tracking-tight">
-        Sign in to your account
-      </h2>
+    <AuthLayout
+      title="Sign in to your account"
+      subtitle={
+        serverState.include_signup_link ? (
+          <>
+            Don&apos;t have an account?{" "}
+            <LinkComponent
+              href={serverState.linkGenerator.signupController({})}
+            >
+              Create one
+            </LinkComponent>
+          </>
+        ) : undefined
+      }
+    >
+      <form className="grid grid-cols-1 gap-6">
+        {loginError && (
+          <ErrorComponent>
+            <span>{loginError}</span>
+          </ErrorComponent>
+        )}
+        <InputComponent
+          label="Email"
+          type="email"
+          autoComplete="email"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+          placeholder="you@example.com"
+          value={email}
+        />
+        <InputComponent
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter your password"
+          value={password}
+        />
+        <ButtonComponent
+          type="submit"
+          disabled={isLoadingSubmit}
+          onClick={async (e) => {
+            e.preventDefault();
+            setIsLoadingSubmit(true);
 
-      {serverState.include_signup_link && (
-        <div className="mt-2 text-center text-sm text-gray-600">
-          If you don't have an account, sign up{" "}
-          <LinkComponent href={serverState.linkGenerator.signupController({})}>
-            here.
-          </LinkComponent>
-        </div>
-      )}
-
-      <div className="mt-8 rounded bg-white p-8 shadow">
-        <form className="space-y-4">
-          {loginError && (
-            <ErrorComponent>
-              <span>{loginError}</span>
-            </ErrorComponent>
-          )}
-          <InputComponent
-            type="email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            placeholder="Email"
-            value={email}
-          />
-          <InputComponent
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            value={password}
-          />
-          <ButtonComponent
-            type="submit"
-            disabled={isLoadingSubmit}
-            onClick={async (e) => {
-              // Disable default form submission
-              e.preventDefault();
-
-              setIsLoadingSubmit(true);
-
-              try {
-                await serverState.login({
-                  requestBody: {
-                    username: email,
-                    password: password,
-                  },
-                });
-                setLoginError(undefined);
-                window.location.href = serverState.post_login_redirect;
-              } catch (e) {
-                if (e instanceof LoginInvalid) {
-                  setLoginError(e.body.invalid_reason);
-                } else if (e instanceof RequestValidationError) {
-                  setLoginError(e.body.errors[0].message);
-                } else {
-                  setLoginError(
-                    "Unknown server error occurred. Please try again.",
-                  );
-                  throw e;
-                }
-              } finally {
-                setIsLoadingSubmit(false);
+            try {
+              await serverState.login({
+                requestBody: {
+                  username: email,
+                  password: password,
+                },
+              });
+              setLoginError(undefined);
+              window.location.href = serverState.post_login_redirect;
+            } catch (e) {
+              if (e instanceof LoginInvalid) {
+                setLoginError(e.body.invalid_reason);
+              } else if (e instanceof RequestValidationError) {
+                setLoginError(e.body.errors[0].message);
+              } else {
+                setLoginError(
+                  "Unknown server error occurred. Please try again.",
+                );
+                throw e;
               }
-            }}
-          >
-            Login
-          </ButtonComponent>
-        </form>
-        <div className="mt-1 text-center text-sm">
-          <LinkComponent
-            href={serverState.linkGenerator.forgotPasswordController({})}
-          >
-            Forgot your password?
-          </LinkComponent>
-        </div>
+            } finally {
+              setIsLoadingSubmit(false);
+            }
+          }}
+        >
+          Sign in
+        </ButtonComponent>
+      </form>
+      <div className="mt-6">
+        <Divider />
       </div>
-    </div>
+      <p className="mt-6 text-center text-sm/6 text-zinc-500">
+        <LinkComponent
+          href={serverState.linkGenerator.forgotPasswordController({})}
+        >
+          Forgot your password?
+        </LinkComponent>
+      </p>
+    </AuthLayout>
   );
 };
 

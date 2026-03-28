@@ -3,11 +3,9 @@ import { SuccessComponent } from "../components";
 
 const InitialVerification = () => {
   return (
-    <div>
-      <SuccessComponent>
-        Your email has been verified. You can now log in.
-      </SuccessComponent>
-    </div>
+    <SuccessComponent>
+      Your email has been verified. You can now sign in.
+    </SuccessComponent>
   );
 };
 
