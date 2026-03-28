@@ -10,12 +10,14 @@ from mountaineer.io import async_to_sync
 
 from example_app.bootstrap import bootstrap_database
 from example_app.config import AppConfig
+from example_app.postcss_compat import ensure_postcss_bin
 
 
 @command()
 @option("--host", default="127.0.0.1", help="Host to bind the server to")
 @option("--port", default=5006, help="Port to run the server on")
 def runserver(host: str, port: int):
+    ensure_postcss_bin()
     handle_runserver(
         package="example_app",
         webservice="example_app.main:app",
@@ -27,6 +29,7 @@ def runserver(host: str, port: int):
 
 @command()
 def watch():
+    ensure_postcss_bin()
     handle_watch(
         package="example_app",
         webcontroller="example_app.app:controller",
@@ -35,6 +38,7 @@ def watch():
 
 @command()
 def build():
+    ensure_postcss_bin()
     handle_build(
         webcontroller="example_app.app:controller",
     )
