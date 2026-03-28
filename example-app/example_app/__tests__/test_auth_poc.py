@@ -30,6 +30,14 @@ async def test_bootstrap_database_is_idempotent(db_connection: DBConnection):
 
 
 @pytest.mark.asyncio
+async def test_bootstrap_database_rejects_partial_schema(db_connection: DBConnection):
+    await db_connection.conn.execute('DROP TABLE "verificationstate"')
+
+    with pytest.raises(RuntimeError, match="partially initialized"):
+        await bootstrap_database(db_connection)
+
+
+@pytest.mark.asyncio
 async def test_home_render_exposes_auth_state(
     db_connection: DBConnection,
     user_record: models.User,

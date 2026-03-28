@@ -7,7 +7,7 @@ readme = "README.md"
 requires-python = ">=3.11,<4.0"
 
 dependencies = [
-    "mountaineer==0.10.3",
+    "mountaineer==0.11.0",
     "iceaxe>=0.10.0",
     "mountaineer-auth",
 ]

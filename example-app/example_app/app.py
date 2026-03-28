@@ -12,8 +12,15 @@ from mountaineer.render import LinkAttribute, Metadata
 
 from example_app.bootstrap import bootstrap_database
 from example_app.config import AppConfig
-from example_app.controllers import DetailController, HomeController, LoginController
-from mountaineer_auth import LogoutController, SignupController, UnauthorizedError
+from example_app.controllers import DetailController, HomeController
+from mountaineer_auth import (
+    ForgotPasswordController,
+    LoginController,
+    LogoutController,
+    SignupController,
+    UnauthorizedError,
+    VerifyController,
+)
 
 app_config = AppConfig()
 
@@ -30,9 +37,11 @@ controller = AppController(
 
 controller.register(HomeController())
 controller.register(DetailController())
+controller.register(ForgotPasswordController())
 controller.register(LoginController(post_login_redirect="/"))
 controller.register(SignupController(post_signup_redirect="/"))
 controller.register(LogoutController(post_logout_redirect="/"))
+controller.register(VerifyController())
 
 
 @controller.app.on_event("startup")

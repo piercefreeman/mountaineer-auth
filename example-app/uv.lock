@@ -572,7 +572,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "iceaxe", specifier = ">=0.10.0" },
-    { name = "mountaineer", specifier = "==0.10.3" },
+    { name = "mountaineer", specifier = "==0.11.0" },
     { name = "mountaineer-auth", editable = "../" },
 ]
 
@@ -1018,7 +1018,7 @@ wheels = [
 
 [[package]]
 name = "mountaineer"
-version = "0.10.3"
+version = "0.11.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -1034,13 +1034,13 @@ dependencies = [
     { name = "watchfiles" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9f/a5/90f9629a1d52d65bc76f7769b0b13cfae31d51fa081d4b65c4d7bb4f6bc4/mountaineer-0.10.3.tar.gz", hash = "sha256:30df3076e2f5e1a2a733755377a7786d8215fc41ff14fefc53a9e3e3ccd0bdf4", size = 1554967, upload-time = "2025-12-23T22:46:33.025Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c9/f3/94bbbc8d2f76ac989235b5aae1bddbec784aff83a50aba25e3efe7317c4c/mountaineer-0.11.0.tar.gz", hash = "sha256:c473a08412a7bfff830955137c0dae0280d647f9cef7d461dde608f8f00fb523", size = 1580507, upload-time = "2026-03-28T15:28:47.902Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/87/e9/f9d66f391e4248857b3e289dd2804734283e310ace2ff39f8f2011437376/mountaineer-0.10.3-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:362014f79072520f770158fb5090733e3e5de6fe01e6444e5813b9ad26161ae4", size = 20478216, upload-time = "2025-12-23T22:46:20.791Z" },
-    { url = "https://files.pythonhosted.org/packages/dd/6b/49f9a6f479e7bc96bd8619d524c593df39e1694d155d53bd5abdb0786ee4/mountaineer-0.10.3-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:32e6cf97c10210d5034b325d74f42e4e2eea507936c8a600b28b3940324836b5", size = 19428815, upload-time = "2025-12-23T22:46:23.176Z" },
-    { url = "https://files.pythonhosted.org/packages/12/8f/bfaf2baccae6c3b951aad60dcd438ea9bb28b4b963b4de574fcd0a19246f/mountaineer-0.10.3-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:91847fef068c12e77d06a554a35f08ca1658440642118673afcbe0e926702c44", size = 21693709, upload-time = "2025-12-23T22:46:25.676Z" },
-    { url = "https://files.pythonhosted.org/packages/c6/bc/1ca4982129d3d62b3b9fc62772aa74e2246f42c78784639d7837c1da04a0/mountaineer-0.10.3-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0a6d245932147aa4d6bdaff2fbf2426e918eabc151f5106d4a5c9e1c6efe3e44", size = 21417290, upload-time = "2025-12-23T22:46:28.202Z" },
-    { url = "https://files.pythonhosted.org/packages/19/33/19113b1af59ef331f634150b811e3e1f1e8c66fc5652ba7e126f8e0157a8/mountaineer-0.10.3-cp310-abi3-win_amd64.whl", hash = "sha256:4e8b6203f5c980047e5958510175f4be3f8c73b57a9ac16412ca93a30ddb9c9f", size = 19067158, upload-time = "2025-12-23T22:46:31.098Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/0e/7b14468dccc54ff38aa9bc7ab8c16162241eb7e205717ec279c3e22fd0a5/mountaineer-0.11.0-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:373c6150393b47918a1d4a4522e093e64b1bc1f42e34571fb32f63a3706899ff", size = 21756557, upload-time = "2026-03-28T15:28:34.842Z" },
+    { url = "https://files.pythonhosted.org/packages/41/e0/b41ad45f2fd824366019b4dc1109f13eb5a6b52e3cce78448c72ab9222d7/mountaineer-0.11.0-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:a7d809a7fd5a7b686aef165e04144b602ea824b987cceb8619f5008563819abd", size = 20623287, upload-time = "2026-03-28T15:28:37.98Z" },
+    { url = "https://files.pythonhosted.org/packages/d4/c3/2aa89699923a7c6f0ac627037b22aeca758ba8059b6c3d87c86b125f2bf2/mountaineer-0.11.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:fa53c30a20003b4885661c3aed9066e39c6338e8a4d4cbd99ad7f7ebe6180a6a", size = 22901174, upload-time = "2026-03-28T15:28:40.602Z" },
+    { url = "https://files.pythonhosted.org/packages/8b/ba/73cde1b7d5d5783b6425211b9e828026b2b1b0be5a5fddd95ade6aa1f6bf/mountaineer-0.11.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9e9678036f39e627f8c1aadf1d71d1b4e899ca32281f29615ab9cc565ff11459", size = 22710649, upload-time = "2026-03-28T15:28:43.243Z" },
+    { url = "https://files.pythonhosted.org/packages/d7/1f/0bd6530359fa754fe9ad478849dc098d1189d154177c6437072d9a611ad5/mountaineer-0.11.0-cp310-abi3-win_amd64.whl", hash = "sha256:b319a1206fe635504abfe29bf4edb166a324a52fdfd8e38749f938272375ee3c", size = 20283306, upload-time = "2026-03-28T15:28:45.536Z" },
 ]
 
 [[package]]

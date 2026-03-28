@@ -20,8 +20,8 @@ docker compose up --build
 
 Then open `http://localhost:3000/`.
 
-The web app bootstraps its schema on startup, seeds a default detail record,
-and lets you sign up before visiting the protected page.
+The web app bootstraps its schema on first startup, seeds a default detail
+record, and lets you sign up before visiting the protected page.
 
 ## Local Development
 
