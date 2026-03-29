@@ -4,12 +4,12 @@ from fastapi import Request, status
 from fastapi.responses import RedirectResponse
 from iceaxe import DBConnection
 from iceaxe.mountaineer import DatabaseDependencies
+from mountaineer_email.plugin import plugin as email_plugin
 
 from mountaineer import AppController, Depends
 from mountaineer.client_compiler.postcss import PostCSSBundler
 from mountaineer.dependencies import get_function_dependencies
 from mountaineer.render import LinkAttribute, Metadata
-from mountaineer_email.controllers import EmailDetailController, EmailHomeController
 
 from example_app.bootstrap import bootstrap_database
 from example_app.config import AppConfig
@@ -23,10 +23,7 @@ from mountaineer_auth import (
     UnauthorizedError,
     VerifyController,
 )
-from mountaineer_auth.emails import (
-    ForgotPasswordEmailController,
-    VerifyEmailController,
-)
+from mountaineer_auth.emails import ForgotPasswordEmailController, VerifyEmailController
 
 app_config = AppConfig()
 
@@ -51,8 +48,7 @@ controller.register(LogoutController(post_logout_redirect="/"))
 controller.register(VerifyController())
 controller.register(VerifyEmailController())
 controller.register(WelcomePreviewEmail())
-controller.register(EmailHomeController())
-controller.register(EmailDetailController())
+controller.register(email_plugin)
 
 
 @controller.app.on_event("startup")

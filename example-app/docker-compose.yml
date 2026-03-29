@@ -17,12 +17,21 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: example_app
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: example_app_db
-      ENVIRONMENT: development
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=example_app
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=example_app_db
+      - ENVIRONMENT=development
+      - AUTH_EMAIL_ENABLED
+      - RESEND_API_KEY
+      - AUTH_EMAIL__FROM_EMAIL
+      - AUTH_EMAIL__FROM_NAME
+      - AUTH_EMAIL__SERVER_HOST
+      - AUTH_EMAIL__PROJECT_NAME
+      - AUTH_EMAIL__PROJECT_ADDRESS
+      - AUTH_EMAIL__UNSUBSCRIBE_URL
+      - AUTH_EMAIL__HEADER_IMAGE
     volumes:
       - ../example-app/example_app:/usr/src/app/example-app/example_app
       - ../mountaineer_auth:/usr/src/app/mountaineer_auth

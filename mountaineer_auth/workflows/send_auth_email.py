@@ -110,6 +110,7 @@ async def get_auth_email_core() -> AsyncGenerator[EmailProviderCore[Any], None]:
         yield cast(EmailProviderCore[Any], core)
     return
 
+
 @action
 async def construct_auth_email(
     payload: SendAuthEmailInput,

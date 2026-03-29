@@ -567,6 +567,7 @@ dependencies = [
     { name = "iceaxe" },
     { name = "mountaineer" },
     { name = "mountaineer-auth" },
+    { name = "mountaineer-cloud" },
     { name = "mountaineer-email" },
 ]
 
@@ -584,6 +585,7 @@ requires-dist = [
     { name = "iceaxe", specifier = ">=0.10.0" },
     { name = "mountaineer", specifier = "==0.11.0" },
     { name = "mountaineer-auth", editable = "../" },
+    { name = "mountaineer-cloud" },
     { name = "mountaineer-email" },
 ]
 
@@ -1106,7 +1108,7 @@ requires-dist = [
     { name = "iceaxe" },
     { name = "mountaineer" },
     { name = "mountaineer-cloud", specifier = ">=0.1.2" },
-    { name = "mountaineer-email" },
+    { name = "mountaineer-email", specifier = ">=0.1.1" },
     { name = "pydantic", specifier = ">=2.6.1" },
     { name = "pydantic-settings", specifier = ">=2.1.0" },
     { name = "python-jose", extras = ["cryptography"], specifier = ">=3.3.0" },
@@ -1138,7 +1140,7 @@ wheels = [
 
 [[package]]
 name = "mountaineer-email"
-version = "0.1.0"
+version = "0.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "lxml" },
@@ -1146,9 +1148,9 @@ dependencies = [
     { name = "mountaineer-cloud" },
     { name = "pydantic-settings" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/62/2b/7c852dbb6fb2df8ac0fcfd95072076db246ae0e604d9ed807c0ac1bf4373/mountaineer_email-0.1.0.tar.gz", hash = "sha256:2e48fff29aeeb173812d1f532eb27512135af0273e3bbc425fb6781051ceb022", size = 749672, upload-time = "2026-03-27T17:35:50.051Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9c/ed/45b0b262d993767c80190a9d4cdeb94a6a8eb3a1b5821ba4e9f37cc9c1e5/mountaineer_email-0.1.1.tar.gz", hash = "sha256:5f10bdc3dc784a392118c47a7cc3e3298afbc84654707b8c616e6d04a8eea7a4", size = 579605, upload-time = "2026-03-27T23:47:51.228Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1a/da/042f7101d777f944528e197d660dd0401ff85e76d3ae2c0889b4b3fe6e90/mountaineer_email-0.1.0-py3-none-any.whl", hash = "sha256:e0bd9b28dbe59f755e324de901d9f463273312cd78ed3ee78e7b4fb23adc35c2", size = 561501, upload-time = "2026-03-27T17:35:48.717Z" },
+    { url = "https://files.pythonhosted.org/packages/6b/7e/ed6a905ef278637c5e3323efcc585d6cef9a962fb81c69ec18f3a2b5cc57/mountaineer_email-0.1.1-py3-none-any.whl", hash = "sha256:8042504873bbc7348184bb159802439dd1e3026cc8ec30f0eff852c6dfafbc31", size = 388685, upload-time = "2026-03-27T23:47:49.628Z" },
 ]
 
 [[package]]
