@@ -16,6 +16,7 @@ from example_app.config import AppConfig
 from example_app.controllers import DetailController, HomeController
 from example_app.emails import WelcomePreviewEmail
 from mountaineer_auth import (
+    create_plugin as create_auth_plugin,
     ForgotPasswordController,
     LoginController,
     LogoutController,
@@ -23,7 +24,6 @@ from mountaineer_auth import (
     UnauthorizedError,
     VerifyController,
 )
-from mountaineer_auth.emails import ForgotPasswordEmailController, VerifyEmailController
 
 app_config = AppConfig()
 
@@ -37,16 +37,16 @@ controller = AppController(
     ],
 )
 
+auth_plugin = create_auth_plugin()
+auth_plugin.init_controller(ForgotPasswordController())
+auth_plugin.init_controller(LoginController(post_login_redirect="/"))
+auth_plugin.init_controller(SignupController(post_signup_redirect="/"))
+auth_plugin.init_controller(LogoutController(post_logout_redirect="/"))
+auth_plugin.init_controller(VerifyController())
 
 controller.register(HomeController())
 controller.register(DetailController())
-controller.register(ForgotPasswordController())
-controller.register(ForgotPasswordEmailController())
-controller.register(LoginController(post_login_redirect="/"))
-controller.register(SignupController(post_signup_redirect="/"))
-controller.register(LogoutController(post_logout_redirect="/"))
-controller.register(VerifyController())
-controller.register(VerifyEmailController())
+controller.register(auth_plugin)
 controller.register(WelcomePreviewEmail())
 controller.register(email_plugin)
 

@@ -47,7 +47,9 @@ ENV POSTGRES_HOST=postgres \
     ENVIRONMENT=development
 
 RUN uv sync --frozen --no-install-project
+RUN npm install --prefix /usr/src/app/mountaineer_auth/views
 RUN npm install --prefix /usr/src/app/example-app/example_app/views
+RUN uv run --no-sync build-auth
 
 COPY example-app/example_app ./example_app
 

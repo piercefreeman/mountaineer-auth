@@ -36,6 +36,9 @@ services:
       - ../example-app/example_app:/usr/src/app/example-app/example_app
       - ../mountaineer_auth:/usr/src/app/mountaineer_auth
       - /usr/src/app/example-app/example_app/views/node_modules
+      - /usr/src/app/mountaineer_auth/views/node_modules
+      - /usr/src/app/mountaineer_auth/views/_ssr
+      - /usr/src/app/mountaineer_auth/views/_static
     command:
       - bash
       - -lc
