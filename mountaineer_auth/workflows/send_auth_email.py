@@ -7,7 +7,6 @@ from mountaineer_cloud.providers.definition import resolve_cloud_by_config
 from mountaineer_cloud.providers_common.email import EmailProviderCore
 from mountaineer_email.controller import EmailControllerBase
 from mountaineer_email.registry import controller_to_registry_id, get_email_controller
-from mountaineer_email.render import FilledOutEmail
 from pydantic import BaseModel, EmailStr
 from waymark import Depend, RetryPolicy, Workflow, action, workflow
 
@@ -27,12 +26,11 @@ AUTH_EMAIL_WORKFLOW_CONTROLLERS: dict[str, type[EmailControllerBase[Any]]] = {
 def _controller_to_email_key(
     controller: type[EmailControllerBase[Any]],
 ) -> str:
-    try:
-        workflow_label = controller.workflow_label
-    except AttributeError as exc:
+    workflow_label = getattr(controller, "workflow_label", None)
+    if not isinstance(workflow_label, str):
         raise ValueError(
             f"{controller.__name__} must define a workflow_label to be used in auth email workflows."
-        ) from exc
+        )
 
     if AUTH_EMAIL_WORKFLOW_CONTROLLERS.get(workflow_label) is not controller:
         raise ValueError(
@@ -123,10 +121,7 @@ async def construct_auth_email(
             f"Email controller is not registered for auth email key '{payload.email_key}'."
         ) from exc
 
-    rendered_email = cast(
-        FilledOutEmail,
-        await email_controller.render_obj(payload.email_input),
-    )
+    rendered_email = await email_controller.render_obj(payload.email_input)
 
     return ConstructedAuthEmail(
         to_email=payload.to_email,

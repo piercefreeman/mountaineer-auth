@@ -1,14 +1,20 @@
+from dataclasses import dataclass, field
 from typing import Any
 from unittest.mock import patch
 
 import pytest
 from mountaineer_cloud.providers.definition import ProviderDefinition
 from mountaineer_cloud.providers.resend import ResendConfig
+from mountaineer_cloud.providers_common.email import (
+    EmailBody,
+    EmailProviderCore,
+    EmailRecipient,
+)
 from mountaineer_email import EmailControllerBase, EmailMetadata, EmailRenderBase
 from mountaineer_email.render import FilledOutEmail
 from pydantic import BaseModel
 
-from mountaineer.config import register_config_in_context
+from mountaineer.config import ConfigBase, register_config_in_context
 
 from mountaineer_auth.workflows.send_auth_email import (
     AUTH_EMAIL_WORKFLOW_CONTROLLERS,
@@ -59,20 +65,33 @@ class MockWorkflowEmailController(EmailControllerBase[MockWorkflowEmailRequest])
         )
 
 
-class WorkflowTestConfig(ResendConfig):
+class WorkflowTestConfig(ResendConfig, ConfigBase):
     pass
 
 
-class FakeEmailCore:
-    def __init__(self):
-        self.messages: list[dict[str, Any]] = []
+@dataclass
+class FakeEmailCore(EmailProviderCore[Any]):
+    config: Any = None
+    session: Any = None
+    messages: list[dict[str, Any]] = field(default_factory=list)
 
-    async def email_send(self, **kwargs: Any) -> str:
-        self.messages.append(kwargs)
+    async def email_send(
+        self,
+        *,
+        sender: EmailRecipient,
+        recipient: EmailRecipient,
+        subject: str,
+        body: EmailBody,
+    ) -> str:
+        self.messages.append(
+            {
+                "sender": sender,
+                "recipient": recipient,
+                "subject": subject,
+                "body": body,
+            }
+        )
         return "provider-message-id"
-
-    async def aclose(self) -> None:
-        return None
 
 
 @pytest.fixture
