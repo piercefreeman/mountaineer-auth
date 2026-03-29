@@ -22,6 +22,9 @@ services:
       - POSTGRES_USER=example_app
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=example_app_db
+      - WAYMARK_DATABASE_URL=postgresql://example_app:mysecretpassword@postgres:5432/example_app_db
+      - WAYMARK_BRIDGE_GRPC_HOST=waymark
+      - WAYMARK_BRIDGE_GRPC_PORT=24118
       - ENVIRONMENT=development
       - AUTH_EMAIL_ENABLED
       - RESEND_API_KEY
@@ -45,6 +48,52 @@ services:
       - exec uv run runserver --host 0.0.0.0 --port 3000
     ports:
       - "3000:3000"
+    depends_on:
+      - postgres
+      - waymark
+
+  waymark:
+    build:
+      context: ..
+      dockerfile: example-app/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=example_app
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=example_app_db
+      - WAYMARK_DATABASE_URL=postgresql://example_app:mysecretpassword@postgres:5432/example_app_db
+      - WAYMARK_WORKER_GRPC_ADDR=0.0.0.0:24118
+      - ENVIRONMENT=development
+      - AUTH_EMAIL_ENABLED
+      - RESEND_API_KEY
+      - AUTH_EMAIL__FROM_EMAIL
+      - AUTH_EMAIL__FROM_NAME
+      - AUTH_EMAIL__SERVER_HOST
+      - AUTH_EMAIL__PROJECT_NAME
+      - AUTH_EMAIL__PROJECT_ADDRESS
+      - AUTH_EMAIL__UNSUBSCRIBE_URL
+      - AUTH_EMAIL__HEADER_IMAGE
+      - WAYMARK_USER_MODULE=example_app.app
+      - WAYMARK_WORKER_COUNT=2
+      - WAYMARK_LOG_LEVEL=debug
+      - WAYMARK_WEBAPP_ENABLED=true
+      - WAYMARK_WEBAPP_ADDR=0.0.0.0:5008
+    volumes:
+      - ../example-app/example_app:/usr/src/app/example-app/example_app
+      - ../mountaineer_auth:/usr/src/app/mountaineer_auth
+      - /usr/src/app/example-app/example_app/views/node_modules
+      - /usr/src/app/mountaineer_auth/views/node_modules
+      - /usr/src/app/mountaineer_auth/views/_ssr
+      - /usr/src/app/mountaineer_auth/views/_static
+    command:
+      - uv
+      - run
+      - waymark-start-workers
+    ports:
+      - "127.0.0.1:5008:5008"
     depends_on:
       - postgres
 

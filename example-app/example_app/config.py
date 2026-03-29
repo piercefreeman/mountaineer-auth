@@ -16,7 +16,7 @@ class AppConfig(AuthConfig, DatabaseConfig, ResendConfig, ConfigBase):
     AUTH_EMAIL_ENABLED: bool = False
     AUTH_EMAIL: AuthEmailConfig | None = AuthEmailConfig(
         unsubscribe_url="http://localhost:3000/unsubscribe",
-        from_email="noreply@example.com",
+        from_email="onboarding@resend.dev", # should be whitelisted for all accounts
         from_name="Example App",
         server_host="http://localhost:3000",
         project_name="Example App",

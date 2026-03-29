@@ -23,6 +23,9 @@ Then open `http://localhost:3000/`.
 The web app bootstraps its schema on first startup, seeds a default detail
 record, and lets you sign up before visiting the protected page.
 
+Waymark also starts as part of the local stack. Its dashboard is available at
+`http://127.0.0.1:5008/`.
+
 Email previews are available in the admin console at
 `http://localhost:3000/admin/email/`, including the auth emails and the example
 welcome preview.
