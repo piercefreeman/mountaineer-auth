@@ -11,6 +11,7 @@ from pydantic import BaseModel, EmailStr
 from waymark import Depend, RetryPolicy, Workflow, action, workflow
 
 from mountaineer.config import get_config
+from mountaineer.dependencies import get_function_dependencies
 
 from mountaineer_auth.emails.forgot_password_email import ForgotPasswordEmailController
 from mountaineer_auth.emails.verify_email import VerifyEmailController
@@ -104,8 +105,9 @@ async def get_auth_email_core() -> AsyncGenerator[EmailProviderCore[Any], None]:
         )
 
     provider = matching_providers[0]
-    async for core in provider.injection_function():
-        yield cast(EmailProviderCore[Any], core)
+    async with get_function_dependencies(callable=provider.injection_function) as deps:
+        async for core in provider.injection_function(**deps):
+            yield cast(EmailProviderCore[Any], core)
     return
 
 

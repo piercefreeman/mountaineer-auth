@@ -23,8 +23,6 @@ services:
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=example_app_db
       - WAYMARK_DATABASE_URL=postgresql://example_app:mysecretpassword@postgres:5432/example_app_db
-      - WAYMARK_BRIDGE_GRPC_HOST=waymark
-      - WAYMARK_BRIDGE_GRPC_PORT=24118
       - ENVIRONMENT=development
       - AUTH_EMAIL_ENABLED
       - RESEND_API_KEY
@@ -50,7 +48,6 @@ services:
       - "3000:3000"
     depends_on:
       - postgres
-      - waymark
 
   waymark:
     build:
@@ -65,7 +62,6 @@ services:
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=example_app_db
       - WAYMARK_DATABASE_URL=postgresql://example_app:mysecretpassword@postgres:5432/example_app_db
-      - WAYMARK_WORKER_GRPC_ADDR=0.0.0.0:24118
       - ENVIRONMENT=development
       - AUTH_EMAIL_ENABLED
       - RESEND_API_KEY

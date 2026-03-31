@@ -14,6 +14,7 @@ from mountaineer_email import EmailControllerBase, EmailMetadata, EmailRenderBas
 from mountaineer_email.render import FilledOutEmail
 from pydantic import BaseModel
 
+from mountaineer import CoreDependencies, Depends
 from mountaineer.config import ConfigBase, register_config_in_context
 
 from mountaineer_auth.workflows.send_auth_email import (
@@ -161,11 +162,17 @@ async def test_send_auth_email_workflow_runs_end_to_end_under_pytest(
 ):
     del registered_mock_email_controller
 
-    fake_core = FakeEmailCore()
-    config = WorkflowTestConfig(RESEND_API_KEY="re_test_key")
+    config = WorkflowTestConfig.model_construct(RESEND_API_KEY="re_test_key")
+    created_cores: list[FakeEmailCore] = []
 
-    async def fake_injection_function():
-        yield fake_core
+    async def fake_injection_function(
+        config: WorkflowTestConfig = Depends(
+            CoreDependencies.get_config_with_type(WorkflowTestConfig)
+        ),
+    ):
+        core = FakeEmailCore(config=config)
+        created_cores.append(core)
+        yield core
 
     fake_provider = ProviderDefinition(
         config_class=WorkflowTestConfig,
@@ -189,5 +196,7 @@ async def test_send_auth_email_workflow_runs_end_to_end_under_pytest(
             )
 
     assert result.message_id == "provider-message-id"
-    assert len(fake_core.messages) == 1
-    assert fake_core.messages[0]["subject"] == "Hello Ada"
+    assert len(created_cores) == 1
+    assert created_cores[0].config == config
+    assert len(created_cores[0].messages) == 1
+    assert created_cores[0].messages[0]["subject"] == "Hello Ada"
