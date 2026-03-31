@@ -2,16 +2,17 @@ from collections.abc import AsyncGenerator
 from datetime import timedelta
 from typing import Any, TypeVar, cast
 
-from mountaineer_cloud.primitives import EmailBody, EmailMessage, EmailRecipient
-from mountaineer_cloud.providers.definition import resolve_cloud_by_config
-from mountaineer_cloud.providers_common.email import EmailProviderCore
-from mountaineer_email.controller import EmailControllerBase
-from mountaineer_email.registry import controller_to_registry_id, get_email_controller
 from pydantic import BaseModel, EmailStr
 from waymark import Depend, RetryPolicy, Workflow, action, workflow
 
 from mountaineer.config import get_config
 from mountaineer.dependencies import get_function_dependencies
+
+from mountaineer_cloud.primitives import EmailBody, EmailMessage, EmailRecipient
+from mountaineer_cloud.providers.definition import resolve_cloud_by_config
+from mountaineer_cloud.providers_common.email import EmailProviderCore
+from mountaineer_email.controller import EmailControllerBase
+from mountaineer_email.registry import controller_to_registry_id, get_email_controller
 
 from mountaineer_auth.emails.forgot_password_email import ForgotPasswordEmailController
 from mountaineer_auth.emails.verify_email import VerifyEmailController

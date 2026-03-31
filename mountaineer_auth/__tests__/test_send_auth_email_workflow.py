@@ -3,6 +3,11 @@ from typing import Any
 from unittest.mock import patch
 
 import pytest
+from pydantic import BaseModel
+
+from mountaineer import CoreDependencies, Depends
+from mountaineer.config import ConfigBase, register_config_in_context
+
 from mountaineer_cloud.providers.definition import ProviderDefinition
 from mountaineer_cloud.providers.resend import ResendConfig
 from mountaineer_cloud.providers_common.email import (
@@ -12,10 +17,6 @@ from mountaineer_cloud.providers_common.email import (
 )
 from mountaineer_email import EmailControllerBase, EmailMetadata, EmailRenderBase
 from mountaineer_email.render import FilledOutEmail
-from pydantic import BaseModel
-
-from mountaineer import CoreDependencies, Depends
-from mountaineer.config import ConfigBase, register_config_in_context
 
 from mountaineer_auth.workflows.send_auth_email import (
     AUTH_EMAIL_WORKFLOW_CONTROLLERS,
