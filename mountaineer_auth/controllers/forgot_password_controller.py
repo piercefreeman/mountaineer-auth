@@ -143,6 +143,9 @@ class ForgotPasswordController(ControllerBase):
                     verification_code=verification_code.code,
                     user_id=user.id,
                 ),
+                to_email=user.email,
+                from_email=str(config.AUTH_EMAIL.from_email),
+                from_name=config.AUTH_EMAIL.from_name or config.AUTH_EMAIL.project_name,
             )
 
         if self.forgot_password_callback:

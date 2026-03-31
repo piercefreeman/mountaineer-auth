@@ -1,12 +1,14 @@
+from typing import ClassVar
 from uuid import UUID
 
 from fastapi import Depends
 from iceaxe import DBConnection, select
 from iceaxe.mountaineer import DatabaseDependencies
-from mountaineer_email import EmailControllerBase, EmailMetadata, EmailRenderBase
 from pydantic import BaseModel
 
 from mountaineer import CoreDependencies, LinkAttribute, ManagedViewPath, Metadata
+
+from mountaineer_email import EmailControllerBase, EmailMetadata, EmailRenderBase
 
 from mountaineer_auth.config import AuthConfig
 from mountaineer_auth.emails.common import CommonEmailConfig
@@ -28,6 +30,8 @@ class ForgotPasswordEmailRender(EmailRenderBase):
 
 
 class ForgotPasswordEmailController(EmailControllerBase[ForgotPasswordEmailRequest]):
+    workflow_label: ClassVar[str] = "forgot_password"
+
     view_path = (
         ManagedViewPath.from_view_root(get_auth_view_path(""), package_root_link=None)
         / "emails/forgot_password/page.tsx"

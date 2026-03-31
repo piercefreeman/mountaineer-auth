@@ -1,8 +1,8 @@
 from mountaineer.cli import handle_build
 
-from mountaineer_auth.plugin import plugin
+from mountaineer_auth.plugin import create_plugin
 
-app = plugin.to_webserver()
+app = create_plugin().to_webserver()
 
 
 def build():

@@ -16,8 +16,8 @@ dependencies = [
     # unpinned dependencies to allow flexibility
     "mountaineer",
     "iceaxe",
-    "mountaineer-cloud",
-    "mountaineer-email",
+    "mountaineer-cloud>=0.1.2",
+    "mountaineer-email>=0.1.1",
     "waymark"
 
 ]
@@ -47,6 +47,7 @@ section-order = [
     "standard-library",
     "third-party",
     "mountaineer",
+    "mountaineer-cloud",
     "first-party",
     "local-folder",
 ]
@@ -54,6 +55,7 @@ combine-as-imports = true
 
 [tool.ruff.lint.isort.sections]
 mountaineer = ["mountaineer"]
+"mountaineer-cloud" = ["mountaineer_cloud", "mountaineer_email"]
 
 [tool.uv.sources]
 #mountaineer = { path = "../../mountaineer", editable = true }

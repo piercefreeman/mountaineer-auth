@@ -1,6 +1,6 @@
 from typing import Type
 
-from pydantic import model_validator
+from pydantic import EmailStr, model_validator
 from pydantic_settings import BaseSettings
 
 from mountaineer_auth.models import UserAuthMixin, VerificationState
@@ -13,7 +13,9 @@ from mountaineer_auth.models import UserAuthMixin, VerificationState
 
 class AuthEmailConfig(BaseSettings):
     header_image: str | None = None
-    unsubscribe_url: str
+
+    from_email: EmailStr
+    from_name: str | None = None
 
     # Used for absolute links
     server_host: str
@@ -22,6 +24,7 @@ class AuthEmailConfig(BaseSettings):
     # for email compliance
     project_name: str
     project_address: str
+    unsubscribe_url: str
 
 
 class AuthConfig(BaseSettings):
