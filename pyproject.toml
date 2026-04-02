@@ -17,7 +17,7 @@ dependencies = [
     "mountaineer",
     "iceaxe",
     "mountaineer-cloud>=0.1.2",
-    "mountaineer-email>=0.1.1",
+    "mountaineer-email>=0.1.2",
     "waymark"
 
 ]
@@ -60,7 +60,6 @@ mountaineer = ["mountaineer"]
 [tool.uv.sources]
 #mountaineer = { path = "../../mountaineer", editable = true }
 #mountaineer-cloud = { path = "../mountaineer-cloud", editable = true }
-mountaineer-email = { path = "../mountaineer-email", editable = true }
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
