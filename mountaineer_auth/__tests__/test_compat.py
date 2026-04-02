@@ -27,9 +27,7 @@ class TestSendEmailWorkflow:
                     from_email="from@example.com",
                 )
 
-        assert "mountaineer-email workflows are not available" in str(
-            exc_info.value
-        )
+        assert "mountaineer-email workflows are not available" in str(exc_info.value)
 
     @pytest.mark.asyncio
     async def test_sends_email_via_workflow(self):
