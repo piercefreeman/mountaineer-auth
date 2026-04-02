@@ -18,7 +18,9 @@ from mountaineer import (
     passthrough,
 )
 
-from mountaineer_auth.compat import send_email_workflow
+from mountaineer_email.registry import SerializedEmailController
+from mountaineer_email.workflows.send_email import SendEmail, SendEmailInput
+
 from mountaineer_auth.config import AuthConfig
 from mountaineer_auth.models import VerificationType
 from mountaineer_auth.views import get_auth_view_path
@@ -136,9 +138,9 @@ class ForgotPasswordController(ControllerBase):
             await db_connection.insert([verification_code])
 
             # Send the password reset email
-            await send_email_workflow(
-                email_controller,
-                email_request(
+            send_email_input = SendEmailInput(
+                email_controller=email_controller,
+                email_input=email_request(
                     verification_host=config.AUTH_EMAIL.server_host,
                     verification_code=verification_code.code,
                     user_id=user.id,
@@ -146,6 +148,20 @@ class ForgotPasswordController(ControllerBase):
                 to_email=user.email,
                 from_email=str(config.AUTH_EMAIL.from_email),
                 from_name=config.AUTH_EMAIL.from_name or config.AUTH_EMAIL.project_name,
+            )
+            if not isinstance(
+                send_email_input.email_controller,
+                SerializedEmailController,
+            ):
+                raise TypeError("Email controller must serialize before workflow run")
+
+            await SendEmail().run(
+                email_controller=send_email_input.email_controller,
+                email_input=send_email_input.email_input,
+                to_email=str(send_email_input.to_email),
+                to_name=send_email_input.to_name,
+                from_email=str(send_email_input.from_email),
+                from_name=send_email_input.from_name,
             )
 
         if self.forgot_password_callback:
