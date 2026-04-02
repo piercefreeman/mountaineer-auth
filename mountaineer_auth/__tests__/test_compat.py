@@ -41,8 +41,11 @@ class TestSendEmailWorkflow:
 
         # Mock the email dependencies
         mock_send_email_input = MagicMock()
+        mock_send_email_input.email_controller = {
+            "module": "test_module",
+            "key": "Test",
+        }
         mock_send_email_input.email_input = {"test": "data"}
-        mock_send_email_input.email_key = "verify_email"
         mock_send_email_input.to_email = "to@example.com"
         mock_send_email_input.to_name = "Ada"
         mock_send_email_input.from_email = "from@example.com"
@@ -81,7 +84,7 @@ class TestSendEmailWorkflow:
 
             # Verify the workflow was run
             mock_workflow_instance.run.assert_called_once_with(
-                email_key=mock_send_email_input.email_key,
+                email_controller=mock_send_email_input.email_controller,
                 email_input=mock_send_email_input.email_input,
                 to_email=mock_send_email_input.to_email,
                 to_name=mock_send_email_input.to_name,

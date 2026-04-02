@@ -47,7 +47,7 @@ async def send_email_workflow(
 
     workflow = SendAuthEmail()
     await workflow.run(
-        email_key=send_email_input.email_key,
+        email_controller=send_email_input.email_controller,
         email_input=send_email_input.email_input,
         to_email=str(send_email_input.to_email),
         to_name=send_email_input.to_name,

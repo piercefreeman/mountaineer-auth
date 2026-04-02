@@ -1078,7 +1078,7 @@ requires-dist = [
     { name = "iceaxe" },
     { name = "mountaineer" },
     { name = "mountaineer-cloud", specifier = ">=0.1.2" },
-    { name = "mountaineer-email", specifier = ">=0.1.1" },
+    { name = "mountaineer-email", editable = "../mountaineer-email" },
     { name = "pydantic", specifier = ">=2.6.1" },
     { name = "pydantic-settings", specifier = ">=2.1.0" },
     { name = "python-jose", extras = ["cryptography"], specifier = ">=3.3.0" },
@@ -1111,16 +1111,33 @@ wheels = [
 [[package]]
 name = "mountaineer-email"
 version = "0.1.1"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = "../mountaineer-email" }
 dependencies = [
     { name = "lxml" },
     { name = "mountaineer" },
     { name = "mountaineer-cloud" },
     { name = "pydantic-settings" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9c/ed/45b0b262d993767c80190a9d4cdeb94a6a8eb3a1b5821ba4e9f37cc9c1e5/mountaineer_email-0.1.1.tar.gz", hash = "sha256:5f10bdc3dc784a392118c47a7cc3e3298afbc84654707b8c616e6d04a8eea7a4", size = 579605, upload-time = "2026-03-27T23:47:51.228Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/6b/7e/ed6a905ef278637c5e3323efcc585d6cef9a962fb81c69ec18f3a2b5cc57/mountaineer_email-0.1.1-py3-none-any.whl", hash = "sha256:8042504873bbc7348184bb159802439dd1e3026cc8ec30f0eff852c6dfafbc31", size = 388685, upload-time = "2026-03-27T23:47:49.628Z" },
+
+[package.metadata]
+requires-dist = [
+    { name = "lxml", specifier = ">=5.1.0" },
+    { name = "mountaineer" },
+    { name = "mountaineer-cloud", specifier = ">=0.1.1" },
+    { name = "pydantic-settings", specifier = ">=2.2.1" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "httpx", specifier = ">=0.27.0" },
+    { name = "lxml-stubs", specifier = ">=0.5.1" },
+    { name = "mypy", specifier = ">=1.8.0" },
+    { name = "pyright", specifier = ">=1.1.352" },
+    { name = "pytest", specifier = ">=8.0.2" },
+    { name = "pytest-asyncio", specifier = ">=0.23.5" },
+    { name = "pytest-httpx", specifier = ">=0.35.0" },
+    { name = "ruff", specifier = ">=0.3.0" },
+    { name = "ty", specifier = ">=0.0.26" },
 ]
 
 [[package]]

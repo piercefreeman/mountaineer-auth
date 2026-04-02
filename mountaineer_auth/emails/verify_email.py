@@ -1,4 +1,3 @@
-from typing import ClassVar
 from uuid import UUID
 
 from fastapi import Depends
@@ -30,8 +29,6 @@ class VerifyEmailRender(EmailRenderBase):
 
 
 class VerifyEmailController(EmailControllerBase[VerifyEmailRequest]):
-    workflow_label: ClassVar[str] = "verify_email"
-
     view_path = (
         ManagedViewPath.from_view_root(get_auth_view_path(""), package_root_link=None)
         / "emails/verify_email/page.tsx"

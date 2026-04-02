@@ -16,10 +16,10 @@ from mountaineer_cloud.providers_common.email import (
     EmailRecipient,
 )
 from mountaineer_email import EmailControllerBase, EmailMetadata, EmailRenderBase
+from mountaineer_email.registry import serialize_controller
 from mountaineer_email.render import FilledOutEmail
 
 from mountaineer_auth.workflows.send_auth_email import (
-    AUTH_EMAIL_WORKFLOW_CONTROLLERS,
     ConstructedAuthEmail,
     SendAuthEmail,
     SendAuthEmailInput,
@@ -37,8 +37,6 @@ class MockWorkflowEmailRender(EmailRenderBase):
 
 
 class MockWorkflowEmailController(EmailControllerBase[MockWorkflowEmailRequest]):
-    workflow_label = "mock_email"
-
     async def render(
         self,
         payload: MockWorkflowEmailRequest,
@@ -96,22 +94,8 @@ class FakeEmailCore(EmailProviderCore[Any]):
         return "provider-message-id"
 
 
-@pytest.fixture
-def registered_mock_email_controller():
-    with patch.dict(
-        AUTH_EMAIL_WORKFLOW_CONTROLLERS,
-        {"mock_email": MockWorkflowEmailController},
-        clear=True,
-    ):
-        yield MockWorkflowEmailController()
-
-
 @pytest.mark.asyncio
-async def test_construct_auth_email_action(
-    registered_mock_email_controller: MockWorkflowEmailController,
-):
-    del registered_mock_email_controller
-
+async def test_construct_auth_email_action():
     payload = SendAuthEmailInput.from_email_input(
         MockWorkflowEmailController,
         email_input=MockWorkflowEmailRequest(recipient_name="Ada"),
@@ -121,7 +105,16 @@ async def test_construct_auth_email_action(
         from_name="Example App",
     )
 
-    result = await construct_auth_email(payload)
+    assert payload.email_controller == serialize_controller(MockWorkflowEmailController)
+
+    result = await construct_auth_email(
+        email_controller=payload.email_controller,
+        email_input=payload.email_input,
+        to_email=str(payload.to_email),
+        to_name=payload.to_name,
+        from_email=str(payload.from_email),
+        from_name=payload.from_name,
+    )
 
     assert result.to_email == "ada@example.com"
     assert result.to_name == "Ada Lovelace"
@@ -158,11 +151,7 @@ async def test_send_constructed_auth_email_action():
 
 
 @pytest.mark.asyncio
-async def test_send_auth_email_workflow_runs_end_to_end_under_pytest(
-    registered_mock_email_controller: MockWorkflowEmailController,
-):
-    del registered_mock_email_controller
-
+async def test_send_auth_email_workflow_runs_end_to_end_under_pytest():
     config = WorkflowTestConfig.model_construct(RESEND_API_KEY="re_test_key")
     created_cores: list[FakeEmailCore] = []
 
@@ -188,7 +177,7 @@ async def test_send_auth_email_workflow_runs_end_to_end_under_pytest(
         ):
             workflow = SendAuthEmail()
             result = await workflow.run(
-                email_key="mock_email",
+                email_controller=serialize_controller(MockWorkflowEmailController),
                 email_input={"recipient_name": "Ada"},
                 to_email="ada@example.com",
                 to_name="Ada Lovelace",
