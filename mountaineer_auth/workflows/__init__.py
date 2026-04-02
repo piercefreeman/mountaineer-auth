@@ -1,5 +1,5 @@
-from .send_auth_email import (
-    SendAuthEmail as SendAuthEmail,
-    SendAuthEmailInput as SendAuthEmailInput,
-    SendAuthEmailResult as SendAuthEmailResult,
+from mountaineer_email.workflows import (
+    SendEmail as SendEmail,
+    SendEmailInput as SendEmailInput,
+    SendEmailResult as SendEmailResult,
 )

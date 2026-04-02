@@ -10,12 +10,12 @@ from typing import Any, cast
 
 def _get_email_workflow_types() -> tuple[Any, Any]:
     try:
-        module = cast(Any, import_module("mountaineer_auth"))
-        return module.SendAuthEmail, module.SendAuthEmailInput
+        module = cast(Any, import_module("mountaineer_email"))
+        return module.SendEmail, module.SendEmailInput
     except (AttributeError, ImportError) as exc:
         raise ImportError(
-            "mountaineer-auth email workflows are not available. "
-            "Please install it with: pip install mountaineer-auth"
+            "mountaineer-email workflows are not available. "
+            "Please install it with: pip install mountaineer-email"
         ) from exc
 
 
@@ -34,9 +34,9 @@ async def send_email_workflow(
     This is a wrapper that handles the email sending process using waymark's
     workflow system. It runs the SendEmail workflow directly.
     """
-    SendAuthEmail, SendAuthEmailInput = _get_email_workflow_types()
+    SendEmail, SendEmailInput = _get_email_workflow_types()
 
-    send_email_input = SendAuthEmailInput.from_email_input(
+    send_email_input = SendEmailInput.from_email_input(
         email_controller,
         email_input=email_input,
         to_email=to_email,
@@ -45,10 +45,10 @@ async def send_email_workflow(
         from_name=from_name,
     )
 
-    workflow = SendAuthEmail()
+    workflow = SendEmail()
     await workflow.run(
         email_controller=send_email_input.email_controller,
-        email_input=send_email_input.email_input,
+        email_input=send_email_input.email_input.model_dump(mode="json"),
         to_email=str(send_email_input.to_email),
         to_name=send_email_input.to_name,
         from_email=str(send_email_input.from_email),

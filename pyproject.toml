@@ -17,8 +17,7 @@ dependencies = [
     "mountaineer",
     "iceaxe",
     "mountaineer-cloud>=0.1.2",
-    "mountaineer-email>=0.1.2",
-    "waymark"
+    "mountaineer-email>=0.1.3"
 
 ]
 
