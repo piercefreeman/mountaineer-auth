@@ -24,11 +24,3 @@ from mountaineer_auth.plugin import (
     create_plugin as create_plugin,
     plugin as plugin,
 )
-from mountaineer_auth.workflows import (
-    SendAuthEmail as SendAuthEmail,
-    SendAuthEmailInput as SendAuthEmailInput,
-    SendAuthEmailResult as SendAuthEmailResult,
-)
-
-SendEmail = SendAuthEmail
-SendEmailInput = SendAuthEmailInput

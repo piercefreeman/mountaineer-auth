@@ -20,9 +20,11 @@ from mountaineer import (
     passthrough,
 )
 
+from mountaineer_email.registry import SerializedEmailController
+from mountaineer_email.workflows.send_email import SendEmail, SendEmailInput
+
 from mountaineer_auth import models
 from mountaineer_auth.authorize import authorize_response
-from mountaineer_auth.compat import send_email_workflow
 from mountaineer_auth.config import AuthConfig
 from mountaineer_auth.models import VerificationType
 from mountaineer_auth.views import get_auth_view_path
@@ -151,9 +153,9 @@ class SignupController(ControllerBase):
             await db_connection.insert([verification_code])
 
             # Send the verification email
-            await send_email_workflow(
-                verify_email_controller,
-                verify_email_request(
+            send_email_input = SendEmailInput(
+                email_controller=verify_email_controller,
+                email_input=verify_email_request(
                     verification_code=verification_code.code,
                     verification_host=auth_config.AUTH_EMAIL.server_host,
                     user_id=new_user.id,
@@ -162,6 +164,20 @@ class SignupController(ControllerBase):
                 from_email=str(auth_config.AUTH_EMAIL.from_email),
                 from_name=auth_config.AUTH_EMAIL.from_name
                 or auth_config.AUTH_EMAIL.project_name,
+            )
+            if not isinstance(
+                send_email_input.email_controller,
+                SerializedEmailController,
+            ):
+                raise TypeError("Email controller must serialize before workflow run")
+
+            await SendEmail().run(
+                email_controller=send_email_input.email_controller,
+                email_input=send_email_input.email_input,
+                to_email=str(send_email_input.to_email),
+                to_name=send_email_input.to_name,
+                from_email=str(send_email_input.from_email),
+                from_name=send_email_input.from_name,
             )
 
         response = JSONResponse(content=[], status_code=status.HTTP_200_OK)
