@@ -16,16 +16,22 @@ def authorize_response(
     *,
     user_id: UUID,
     auth_config: AuthConfig,
-    token_expiration_minutes: int,
+    token_expiration_minutes: int | None = None,
 ) -> ResponseType:
     """
     Adds a cookie to the passed response that authorizes the given
     user via a session cookie.
     """
+    resolved_token_expiration_minutes = (
+        token_expiration_minutes
+        if token_expiration_minutes is not None
+        else auth_config.AUTH_LOGIN_EXPIRATION_MINUTES
+    )
+
     access_token = authorize_user(
         user_id=user_id,
         auth_config=auth_config,
-        token_expiration_minutes=token_expiration_minutes,
+        token_expiration_minutes=resolved_token_expiration_minutes,
     )
 
     response.set_cookie(
@@ -38,7 +44,7 @@ def authorize_response(
         # The cookie max age needs to be set, even with the separate JIT expiration
         # otherwise browsers will default it to a session cookie that expires when
         # the browser is closed.
-        max_age=token_expiration_minutes * 60,
+        max_age=resolved_token_expiration_minutes * 60,
     )
     return response
 
@@ -47,7 +53,7 @@ def authorize_user(
     *,
     user_id: UUID,
     auth_config: AuthConfig,
-    token_expiration_minutes: int,
+    token_expiration_minutes: int | None = None,
 ):
     """
     Generates the user a new temporary API key
@@ -55,8 +61,15 @@ def authorize_user(
     """
     # Randomly seed with a uuid4, then encrypt with our secret key to add
     # more entropy to the tokens and make it harder to brute-force the raw token ID
+    resolved_token_expiration_minutes = (
+        token_expiration_minutes
+        if token_expiration_minutes is not None
+        else auth_config.AUTH_LOGIN_EXPIRATION_MINUTES
+    )
     raw_token = str(uuid4())
-    expire = datetime.now(timezone.utc) + timedelta(minutes=token_expiration_minutes)
+    expire = datetime.now(timezone.utc) + timedelta(
+        minutes=resolved_token_expiration_minutes
+    )
     to_encode = {"sub": str(raw_token), "user_id": str(user_id), "exp": expire}
     encoded_token = jwt.encode(
         to_encode,

@@ -39,6 +39,7 @@ class AuthConfig(BaseSettings):
 
     API_SECRET_KEY: str
     API_KEY_ALGORITHM: str = "HS256"
+    AUTH_LOGIN_EXPIRATION_MINUTES: int = 60 * 24
 
     AUTH_EMAIL_ENABLED: bool = False
     AUTH_EMAIL: AuthEmailConfig | None = None
