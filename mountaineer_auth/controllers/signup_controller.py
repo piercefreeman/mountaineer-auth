@@ -70,12 +70,12 @@ class SignupController(ControllerBase):
         post_signup_redirect: str = "/",
         verify_email_controller: Type["VerifyEmailController"] | None = None,
         verify_email_request: Type["VerifyEmailRequest"] | None = None,
-        token_expiration_minutes: int = 60 * 24,
+        token_expiration_minutes: int | None = None,
         verification_expiration_minutes: int = 60 * 24,
         signup_callback: Callable[[SignupRequest], Awaitable[None]] | None = None,
     ):
         """
-        :param token_expiration_minutes: Defaults to 24 hours
+        :param token_expiration_minutes: Defaults to auth_config.AUTH_LOGIN_EXPIRATION_MINUTES
         :param verification_expiration_minutes: Defaults to 24 hours
 
         """

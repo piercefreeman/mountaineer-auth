@@ -55,11 +55,11 @@ class LoginController(ControllerBase):
         self,
         post_login_redirect: str = "/",
         include_signup_link: bool = True,
-        token_expiration_minutes: int = 60 * 24,
+        token_expiration_minutes: int | None = None,
         login_callback: Callable[[LoginRequest], Awaitable[None]] | None = None,
     ):
         """
-        :param token_expiration_minutes: Defaults to 24 hours
+        :param token_expiration_minutes: Defaults to auth_config.AUTH_LOGIN_EXPIRATION_MINUTES
 
         """
         super().__init__()
