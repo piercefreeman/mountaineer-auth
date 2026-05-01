@@ -22,9 +22,10 @@ def authorize_response(
     Adds a cookie to the passed response that authorizes the given
     user via a session cookie.
     """
-    resolved_token_expiration_minutes = resolve_token_expiration_minutes(
-        auth_config=auth_config,
-        token_expiration_minutes=token_expiration_minutes,
+    resolved_token_expiration_minutes = (
+        token_expiration_minutes
+        if token_expiration_minutes is not None
+        else auth_config.AUTH_LOGIN_EXPIRATION_MINUTES
     )
 
     access_token = authorize_user(
@@ -60,9 +61,10 @@ def authorize_user(
     """
     # Randomly seed with a uuid4, then encrypt with our secret key to add
     # more entropy to the tokens and make it harder to brute-force the raw token ID
-    resolved_token_expiration_minutes = resolve_token_expiration_minutes(
-        auth_config=auth_config,
-        token_expiration_minutes=token_expiration_minutes,
+    resolved_token_expiration_minutes = (
+        token_expiration_minutes
+        if token_expiration_minutes is not None
+        else auth_config.AUTH_LOGIN_EXPIRATION_MINUTES
     )
     raw_token = str(uuid4())
     expire = datetime.now(timezone.utc) + timedelta(
@@ -76,14 +78,3 @@ def authorize_user(
     )
 
     return encoded_token
-
-
-def resolve_token_expiration_minutes(
-    *,
-    auth_config: AuthConfig,
-    token_expiration_minutes: int | None,
-) -> int:
-    if token_expiration_minutes is not None:
-        return token_expiration_minutes
-
-    return auth_config.AUTH_LOGIN_EXPIRATION_MINUTES
