@@ -178,6 +178,7 @@ class SignupController(ControllerBase):
                 to_name=send_email_input.to_name,
                 from_email=str(send_email_input.from_email),
                 from_name=send_email_input.from_name,
+                _blocking=False,  # ty: ignore[unknown-argument]
             )
 
         response = JSONResponse(content=[], status_code=status.HTTP_200_OK)

@@ -162,6 +162,7 @@ class ForgotPasswordController(ControllerBase):
                 to_name=send_email_input.to_name,
                 from_email=str(send_email_input.from_email),
                 from_name=send_email_input.from_name,
+                _blocking=False,  # ty: ignore[unknown-argument]
             )
 
         if self.forgot_password_callback:
