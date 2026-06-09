@@ -66,6 +66,9 @@ jobs:
       - name: Build sdist and wheel
         run: uv build
 
+      - name: Verify packaged plugin assets
+        run: uv run python .github/scripts/verify_plugin_assets.py mountaineer_auth/views/_static mountaineer_auth/views/_ssr
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
