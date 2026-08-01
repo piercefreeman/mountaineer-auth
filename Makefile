@@ -41,14 +41,14 @@ endef
 # Define a function to run biome on the frontend source directories
 define run_biome
 	@echo "\n=== Running biome on $(VIEWS_DIR) ==="; \
-	(cd $(VIEWS_DIR) && npm exec -- biome check --write package.json postcss.config.mjs $$(find auth emails -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' \) ! -path '*/_server/*')) || { echo "FAILED: biome in $(VIEWS_DIR)"; exit 1; }; \
+	(cd $(VIEWS_DIR) && npm exec -- biome check --write package.json postcss.config.mjs $$(find auth emails -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' \) ! -path '*/_server/*' ! -path '*/.mountaineer/*')) || { echo "FAILED: biome in $(VIEWS_DIR)"; exit 1; }; \
 	echo "=== biome completed successfully for $(VIEWS_DIR) ===";
 endef
 
 # Define a function to run biome in CI mode (check only, no fixes)
 define run_biome_ci
 	@echo "\n=== Running biome (validation only) on $(VIEWS_DIR) ==="; \
-	(cd $(VIEWS_DIR) && npm exec -- biome check package.json postcss.config.mjs $$(find auth emails -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' \) ! -path '*/_server/*')) || { echo "FAILED: biome in $(VIEWS_DIR)"; exit 1; }; \
+	(cd $(VIEWS_DIR) && npm exec -- biome check package.json postcss.config.mjs $$(find auth emails -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' \) ! -path '*/_server/*' ! -path '*/.mountaineer/*')) || { echo "FAILED: biome in $(VIEWS_DIR)"; exit 1; }; \
 	echo "=== biome validation completed successfully for $(VIEWS_DIR) ===";
 endef
 

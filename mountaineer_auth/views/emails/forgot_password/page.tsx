@@ -1,6 +1,6 @@
 import { Button, Text } from "@react-email/components";
 import CommonWrapper from "../common_wrapper";
-import { useServer } from "./_server/useServer";
+import { useServer } from "./.mountaineer/useServer";
 
 const Page = () => {
 	const serverState = useServer();

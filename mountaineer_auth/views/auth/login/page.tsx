@@ -7,8 +7,8 @@ import {
 	InputComponent,
 	LinkComponent,
 } from "../components";
-import { LoginInvalid, RequestValidationError } from "./_server/actions";
-import { useServer } from "./_server/useServer";
+import { LoginInvalid, RequestValidationError } from "./.mountaineer/actions";
+import { useServer } from "./.mountaineer/useServer";
 
 const LoginPage = () => {
 	const serverState = useServer();

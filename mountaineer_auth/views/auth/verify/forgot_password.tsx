@@ -8,8 +8,8 @@ import {
 import {
 	RequestValidationError,
 	ResetPasswordInvalid,
-} from "./_server/actions";
-import type { ServerState } from "./_server/useServer";
+} from "./.mountaineer/actions";
+import type { ServerState } from "./.mountaineer/useServer";
 
 const ForgotPassword = ({ serverState }: { serverState: ServerState }) => {
 	const [password, setPassword] = useState("");

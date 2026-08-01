@@ -7,8 +7,8 @@ import {
 	LinkComponent,
 	SuccessComponent,
 } from "../components";
-import { RequestValidationError } from "./_server/actions";
-import { useServer } from "./_server/useServer";
+import { RequestValidationError } from "./.mountaineer/actions";
+import { useServer } from "./.mountaineer/useServer";
 
 const ForgotPasswordPage = () => {
 	const serverState = useServer();

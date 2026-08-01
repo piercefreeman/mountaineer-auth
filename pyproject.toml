@@ -29,7 +29,10 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build]
-artifacts = ["mountaineer_auth/views/_static", "mountaineer_auth/views/_ssr"]
+artifacts = [
+    "mountaineer_auth/views/.mountaineer/static",
+    "mountaineer_auth/views/.mountaineer/ssr",
+]
 
 [dependency-groups]
 dev = [
