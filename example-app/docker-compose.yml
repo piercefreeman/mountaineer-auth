@@ -38,8 +38,7 @@ services:
       - ../mountaineer_auth:/usr/src/app/mountaineer_auth
       - /usr/src/app/example-app/example_app/views/node_modules
       - /usr/src/app/mountaineer_auth/views/node_modules
-      - /usr/src/app/mountaineer_auth/views/_ssr
-      - /usr/src/app/mountaineer_auth/views/_static
+      - /usr/src/app/mountaineer_auth/views/.mountaineer
     command:
       - bash
       - -lc
@@ -82,8 +81,7 @@ services:
       - ../mountaineer_auth:/usr/src/app/mountaineer_auth
       - /usr/src/app/example-app/example_app/views/node_modules
       - /usr/src/app/mountaineer_auth/views/node_modules
-      - /usr/src/app/mountaineer_auth/views/_ssr
-      - /usr/src/app/mountaineer_auth/views/_static
+      - /usr/src/app/mountaineer_auth/views/.mountaineer
     command:
       - uv
       - run

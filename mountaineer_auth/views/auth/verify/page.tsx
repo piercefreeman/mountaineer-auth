@@ -1,7 +1,7 @@
 import type React from "react";
 import { AuthLayout, ErrorComponent, LinkComponent } from "../components";
-import { VerificationType } from "./_server/models";
-import { useServer } from "./_server/useServer";
+import { VerificationType } from "./.mountaineer/models";
+import { useServer } from "./.mountaineer/useServer";
 import ForgotPassword from "./forgot_password";
 import InitialVerification from "./initial_verification";
 

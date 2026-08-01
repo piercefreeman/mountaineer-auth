@@ -576,26 +576,6 @@ wheels = [
 ]
 
 [[package]]
-name = "firehot"
-version = "0.4.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/07/6c/66563a7c6b7cfb1f1af7fcea0b31228c05f0fbad7f2321ff2b867992dcc7/firehot-0.4.1.tar.gz", hash = "sha256:d19ca93f0ad62c32043b6e4e338cf3f6dce948fdf6c3756b62582b4ba3a77444", size = 35887143, upload-time = "2025-03-20T04:39:17.816Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/18/24/8c9f7d106489c18f4ecbe294e657b74a1343f4157bb63c19411109f28807/firehot-0.4.1-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:9aafe8b12c0b0f6afd658d6491d106e4a9ca5545220f1c868b92455cccd0e902", size = 2265973, upload-time = "2025-03-20T04:38:57.985Z" },
-    { url = "https://files.pythonhosted.org/packages/b4/ff/91760462bb509d45a3cda1efe40deb7f82ddd65488600e19cf1c176854ce/firehot-0.4.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:2bb660796c8c41266bda793e1406ace96ff23b2111c97ab86640623013d533e7", size = 2151174, upload-time = "2025-03-20T04:38:59.66Z" },
-    { url = "https://files.pythonhosted.org/packages/6a/c8/37028e8102aef9e86c36431b5cce67a240c80248e8fdb9179ce3926940fe/firehot-0.4.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:6147583fea491ac4f5609a56748356b3d2ee8d0705299e02240882b59012d5d5", size = 2335282, upload-time = "2025-03-20T04:39:01.821Z" },
-    { url = "https://files.pythonhosted.org/packages/a7/17/644b3ae4ca6d80937207dc706c3932851dc4b4870a04bfbd6fba3e3f4eee/firehot-0.4.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7f88743317340a87c088335331d220f31cc9484bbabb779aa0cd814dbbae56aa", size = 2449492, upload-time = "2025-03-20T04:39:03.21Z" },
-    { url = "https://files.pythonhosted.org/packages/10/c5/7239b84ce9f7c1c3843a47d228eefa3fbaa9a14df7aec741f934338a9658/firehot-0.4.1-cp312-cp312-macosx_10_12_x86_64.whl", hash = "sha256:43a2c9e361132c8eb33553311c2fb1e7e854a17c9e2cc930dcf92c22a832c994", size = 2265866, upload-time = "2025-03-20T04:39:05.046Z" },
-    { url = "https://files.pythonhosted.org/packages/0a/84/9a24ec0c5721f977ba9d73c6ffe43ff690e59ae2d05fcaa9577028dffa86/firehot-0.4.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:3e9b6da39a6360befe019b0df2b5c9a5a483ba83448cd9748d4692d65e828a1e", size = 2151739, upload-time = "2025-03-20T04:39:06.373Z" },
-    { url = "https://files.pythonhosted.org/packages/b0/83/dbab2026bb4b13c6a33c5ad18105cf0c5e030b93274beaf3b4cf9279bae0/firehot-0.4.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f68e226ad3842689e3d44d9e20669de0e7ef1e8536f73e51e83ba48cfba0c67f", size = 2332181, upload-time = "2025-03-20T04:39:07.922Z" },
-    { url = "https://files.pythonhosted.org/packages/35/97/9b44b024680af8e564b1e7ae3c50ba9500556faf0fd0348747c5f6711f3d/firehot-0.4.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7bc3034e588146df70e0115f88c5a5d59b154618e9f77ae550cefadb1f7c2d33", size = 2447126, upload-time = "2025-03-20T04:39:09.335Z" },
-    { url = "https://files.pythonhosted.org/packages/00/54/7f43e71914901c8c01a7927c72adc3ac3fa1ce09825b65fa10ac58a02cfd/firehot-0.4.1-cp313-cp313-macosx_10_12_x86_64.whl", hash = "sha256:c43dce07754951c168b2f83e81b2aa167d5b5911a73b7687c9e4356ceafc6b51", size = 2265865, upload-time = "2025-03-20T04:39:10.71Z" },
-    { url = "https://files.pythonhosted.org/packages/6a/ae/e296acfce31ee523195bc20a61c8d2e6ef433c302dee8b6648f8afce18bc/firehot-0.4.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:0333e74bc0d49732efde5b8deb7bf02697a9eef9af5d4ac373a55bf87634838b", size = 2151738, upload-time = "2025-03-20T04:39:12.455Z" },
-    { url = "https://files.pythonhosted.org/packages/cd/81/43a59ce19b583cb9e45c80ef3edadf5f87b4007186238517b37393e4a76b/firehot-0.4.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:086218f557703f69d338fd93fedd11e04c096edc050d09992f594f4dcba39095", size = 2332182, upload-time = "2025-03-20T04:39:14.18Z" },
-    { url = "https://files.pythonhosted.org/packages/45/e3/a52d6ecd4b0a8c8f16e3ac951507fdd4e333568a59e46af8aec42c88b1c4/firehot-0.4.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5256083ecb3c8f792a4ce352608a7e8dd5ed7257efc2a07f4ebc4f81e7b2c5c4", size = 2447126, upload-time = "2025-03-20T04:39:15.853Z" },
-]
-
-[[package]]
 name = "frozenlist"
 version = "1.8.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1020,34 +1000,32 @@ wheels = [
 
 [[package]]
 name = "mountaineer"
-version = "0.11.0"
+version = "0.20.0.dev1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "fastapi" },
-    { name = "firehot" },
     { name = "inflection" },
+    { name = "mountaineer-di" },
     { name = "mountaineer-exceptions" },
     { name = "packaging" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "rich" },
     { name = "uvicorn", extra = ["standard"] },
-    { name = "watchfiles" },
-    { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c9/f3/94bbbc8d2f76ac989235b5aae1bddbec784aff83a50aba25e3efe7317c4c/mountaineer-0.11.0.tar.gz", hash = "sha256:c473a08412a7bfff830955137c0dae0280d647f9cef7d461dde608f8f00fb523", size = 1580507, upload-time = "2026-03-28T15:28:47.902Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/71/14/fe5839708905310577da84bea57b103b5b7e67efbcd0fa71c19ec2d03cbc/mountaineer-0.20.0.dev1.tar.gz", hash = "sha256:3f06a639a44f5667b14d2c0e4d5297047a7c21106379c1cc63ddedd39d8259f5", size = 889554, upload-time = "2026-07-31T13:30:35.961Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4e/0e/7b14468dccc54ff38aa9bc7ab8c16162241eb7e205717ec279c3e22fd0a5/mountaineer-0.11.0-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:373c6150393b47918a1d4a4522e093e64b1bc1f42e34571fb32f63a3706899ff", size = 21756557, upload-time = "2026-03-28T15:28:34.842Z" },
-    { url = "https://files.pythonhosted.org/packages/41/e0/b41ad45f2fd824366019b4dc1109f13eb5a6b52e3cce78448c72ab9222d7/mountaineer-0.11.0-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:a7d809a7fd5a7b686aef165e04144b602ea824b987cceb8619f5008563819abd", size = 20623287, upload-time = "2026-03-28T15:28:37.98Z" },
-    { url = "https://files.pythonhosted.org/packages/d4/c3/2aa89699923a7c6f0ac627037b22aeca758ba8059b6c3d87c86b125f2bf2/mountaineer-0.11.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:fa53c30a20003b4885661c3aed9066e39c6338e8a4d4cbd99ad7f7ebe6180a6a", size = 22901174, upload-time = "2026-03-28T15:28:40.602Z" },
-    { url = "https://files.pythonhosted.org/packages/8b/ba/73cde1b7d5d5783b6425211b9e828026b2b1b0be5a5fddd95ade6aa1f6bf/mountaineer-0.11.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9e9678036f39e627f8c1aadf1d71d1b4e899ca32281f29615ab9cc565ff11459", size = 22710649, upload-time = "2026-03-28T15:28:43.243Z" },
-    { url = "https://files.pythonhosted.org/packages/d7/1f/0bd6530359fa754fe9ad478849dc098d1189d154177c6437072d9a611ad5/mountaineer-0.11.0-cp310-abi3-win_amd64.whl", hash = "sha256:b319a1206fe635504abfe29bf4edb166a324a52fdfd8e38749f938272375ee3c", size = 20283306, upload-time = "2026-03-28T15:28:45.536Z" },
+    { url = "https://files.pythonhosted.org/packages/6c/0a/a719f91dbb9f3fe91d343711bd7d8d5dd0fe6440837adecbde0df2a4dd9d/mountaineer-0.20.0.dev1-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:10005e66b91aacd27c254d03a36a683d9b333891a55c137963335d4ac488fbb4", size = 17017877, upload-time = "2026-07-31T13:30:24.289Z" },
+    { url = "https://files.pythonhosted.org/packages/f2/69/83b44ad6156a69a46a9cc081f8a71389d5736ec1a27020efc6e356495cf3/mountaineer-0.20.0.dev1-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:9340600b29274fd8d0de4e9f8a510e4c5b106e13b74870fffc1157c1de5e19e2", size = 16120411, upload-time = "2026-07-31T13:30:26.728Z" },
+    { url = "https://files.pythonhosted.org/packages/74/f8/3fc131a4ff1aaf2982105b0283f45a8532377776806a5dee5e0a542db767/mountaineer-0.20.0.dev1-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1130ac20b2459ce3c2ac7ebda99dc38380f204276720a7050f2a57e56c625e7a", size = 18342434, upload-time = "2026-07-31T13:30:28.932Z" },
+    { url = "https://files.pythonhosted.org/packages/b8/f2/439a41b10db13d1b23b2b45a343f7845f7b2821b393b89230a6fbc69f04e/mountaineer-0.20.0.dev1-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f23368425fbc87183bc1182ad215b34183dcab20b4fff6b6854b195fff3501e0", size = 17912066, upload-time = "2026-07-31T13:30:31.607Z" },
+    { url = "https://files.pythonhosted.org/packages/68/96/dfe4241081b5f65877a1e75e3fa2aa2a0a3478b2f29e3f210a716c54edb9/mountaineer-0.20.0.dev1-cp310-abi3-win_amd64.whl", hash = "sha256:686ea7b1cb5b8bb3cf48a69408d7cc2b7ce29a8a92cb90d731d176bbd6a35f19", size = 15787965, upload-time = "2026-07-31T13:30:33.818Z" },
 ]
 
 [[package]]
 name = "mountaineer-auth"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "bcrypt" },
@@ -1075,9 +1053,9 @@ requires-dist = [
     { name = "bcrypt", specifier = ">=4.1.2" },
     { name = "email-validator", specifier = ">=2.1.1" },
     { name = "iceaxe" },
-    { name = "mountaineer" },
-    { name = "mountaineer-cloud", specifier = ">=0.1.2" },
-    { name = "mountaineer-email", specifier = ">=0.1.3" },
+    { name = "mountaineer", specifier = ">=0.20.0.dev1" },
+    { name = "mountaineer-cloud", specifier = ">=0.2.0.dev1" },
+    { name = "mountaineer-email", specifier = ">=0.2.0.dev1" },
     { name = "pydantic", specifier = ">=2.6.1" },
     { name = "pydantic-settings", specifier = ">=2.1.0" },
     { name = "python-jose", extras = ["cryptography"], specifier = ">=3.3.0" },
@@ -1094,21 +1072,34 @@ dev = [
 
 [[package]]
 name = "mountaineer-cloud"
-version = "0.1.2"
+version = "0.2.0.dev1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aioboto3" },
     { name = "httpx" },
+    { name = "mountaineer" },
     { name = "pydantic-settings" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2f/08/3ce1059123d4cd1d69b8c3a8a84f4fe12ceb1255b08438b0d0c4d3aa9c39/mountaineer_cloud-0.1.2.tar.gz", hash = "sha256:09cddb0c7a87fb93b21ae253f9313cf314751adaca676a438d62e5d6de39f568", size = 970263, upload-time = "2026-03-28T20:57:41.113Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/20/4c/8b59c58250fb3a4d64e81128d3bb82ed658497dd9a22b9025d3153bffade/mountaineer_cloud-0.2.0.dev1.tar.gz", hash = "sha256:697d2076caab1f08443af514d23627ec7ad569099c4e668e60146485a36ddadf", size = 971953, upload-time = "2026-08-01T15:11:20.401Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/af/22/4c2ec9a2538d20bda4392ff5da8ce97e8b7c7080893f788b79a36b3d92cb/mountaineer_cloud-0.1.2-py3-none-any.whl", hash = "sha256:90a614087aa717755c526b1a308a9a290dd18a0d1aefcd50011e79eb2ca031f8", size = 47273, upload-time = "2026-03-28T20:57:39.806Z" },
+    { url = "https://files.pythonhosted.org/packages/02/74/8d3ba88e6d4e44045377173140d3c3e722a7d83b41d62d56b09b57a504d8/mountaineer_cloud-0.2.0.dev1-py3-none-any.whl", hash = "sha256:21145bdf845986046711c965126a5ba5ed6a88d08d555dfb418eff16c201a0b5", size = 48052, upload-time = "2026-08-01T15:11:18.844Z" },
+]
+
+[[package]]
+name = "mountaineer-di"
+version = "0.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/61/f2/9482135ed6efde1eaaa903bdd7c953df65c6c8288f5a90e9501dc0562958/mountaineer_di-0.2.1.tar.gz", hash = "sha256:56406f73b2b16209b8ac2ddf95e60404ecb4c98c281e16fbefb26359464cf6d1", size = 46279, upload-time = "2026-04-22T00:41:18.485Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ef/7d/6cad2a62913c4ef88948e16b6017656630d19cc874b96f7c9ad4ef28ac37/mountaineer_di-0.2.1-py3-none-any.whl", hash = "sha256:1c9157ef878b4277106753ee9209c0c4bd31bd0761f27e127842c5eb15fdc144", size = 12500, upload-time = "2026-04-22T00:41:16.899Z" },
 ]
 
 [[package]]
 name = "mountaineer-email"
-version = "0.1.3"
+version = "0.2.0.dev1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "email-validator" },
@@ -1118,9 +1109,9 @@ dependencies = [
     { name = "pydantic-settings" },
     { name = "waymark" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7b/27/f728dd7bb1a0d03e991336dcd0ebf666ead95450a18aabd5a90ec8770f7c/mountaineer_email-0.1.3.tar.gz", hash = "sha256:fbde585118ed3441ab731fb371994fa67ae812e8107c3256fb1b78752adc4643", size = 592663, upload-time = "2026-04-02T14:25:44.91Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/51/23/e4e258ee0531811b86144cb9fdda825d4af627e68714572bd152aa8e90e0/mountaineer_email-0.2.0.dev1.tar.gz", hash = "sha256:723b9a1fe8d42e2311a59b2cfa35dbfa8dd0d4b65183ffe52ea31397ce9979f5", size = 1114860, upload-time = "2026-08-01T15:12:10.53Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2e/f6/15f51419c44bf4ecb7b13e10c6bdf40b19c70116ca176c12b9f3735e1be3/mountaineer_email-0.1.3-py3-none-any.whl", hash = "sha256:13a31a336e91eb7d743dc8d169a4537b7ba28cdb68d4db101337043c06f13da2", size = 396158, upload-time = "2026-04-02T14:25:43.492Z" },
+    { url = "https://files.pythonhosted.org/packages/75/f1/f1f7118df0f687024eaf7cfa5570386e28a4c206141d9c893713d19ba477/mountaineer_email-0.2.0.dev1-py3-none-any.whl", hash = "sha256:efd6432e3e6024c5d8323d913a1c817c7999143c950ce8e53155181f3e432106", size = 918146, upload-time = "2026-08-01T15:12:09.204Z" },
 ]
 
 [[package]]

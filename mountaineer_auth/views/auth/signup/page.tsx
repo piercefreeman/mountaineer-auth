@@ -6,8 +6,8 @@ import {
 	InputComponent,
 	LinkComponent,
 } from "../components";
-import { RequestValidationError, SignupInvalid } from "./_server/actions";
-import { useServer } from "./_server/useServer";
+import { RequestValidationError, SignupInvalid } from "./.mountaineer/actions";
+import { useServer } from "./.mountaineer/useServer";
 
 const SignupPage = () => {
 	const serverState = useServer();

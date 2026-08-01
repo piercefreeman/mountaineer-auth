@@ -1,5 +1,5 @@
 import React from "react";
-import { useServer } from "./_server/useServer";
+import { useServer } from "./.mountaineer/useServer";
 
 const Home = () => {
   const serverState = useServer();
