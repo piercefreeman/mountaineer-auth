@@ -16,8 +16,8 @@ dependencies = [
     # unpinned dependencies to allow flexibility
     "mountaineer>=0.20.0.dev1",
     "iceaxe",
-    "mountaineer-cloud>=0.1.2",
-    "mountaineer-email>=0.1.3"
+    "mountaineer-cloud>=0.2.0.dev1",
+    "mountaineer-email>=0.2.0.dev1"
 
 ]
 
