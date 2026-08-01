@@ -4,25 +4,25 @@ from fastapi import Request, status
 from fastapi.responses import RedirectResponse
 from iceaxe import DBConnection
 from iceaxe.mountaineer import DatabaseDependencies
-from mountaineer_email.plugin import plugin as email_plugin
 
 from mountaineer import AppController, Depends
-from mountaineer.client_compiler.postcss import PostCSSBundler
 from mountaineer.dependencies import get_function_dependencies
 from mountaineer.render import LinkAttribute, Metadata
+
+from mountaineer_email.plugin import plugin as email_plugin
 
 from example_app.bootstrap import bootstrap_database
 from example_app.config import AppConfig
 from example_app.controllers import DetailController, HomeController
 from example_app.emails import WelcomePreviewEmail
 from mountaineer_auth import (
-    create_plugin as create_auth_plugin,
     ForgotPasswordController,
     LoginController,
     LogoutController,
     SignupController,
     UnauthorizedError,
     VerifyController,
+    create_plugin as create_auth_plugin,
 )
 
 app_config = AppConfig()
@@ -32,9 +32,6 @@ controller = AppController(
     global_metadata=Metadata(
         links=[LinkAttribute(rel="stylesheet", href="/static/app_main.css")],
     ),
-    custom_builders=[
-        PostCSSBundler(),
-    ],
 )
 
 auth_plugin = create_auth_plugin()

@@ -14,7 +14,7 @@ dependencies = [
     "pydantic-settings>=2.1.0",
     "email-validator>=2.1.1",
     # unpinned dependencies to allow flexibility
-    "mountaineer",
+    "mountaineer>=0.20.0.dev1",
     "iceaxe",
     "mountaineer-cloud>=0.1.2",
     "mountaineer-email>=0.1.3"
