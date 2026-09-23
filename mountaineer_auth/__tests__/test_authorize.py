@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta, timezone
-from uuid import uuid4
 
 from fastapi.responses import Response
 from jose import jwt
@@ -13,12 +12,13 @@ def test_authorize_user_uses_config_default_expiration(config: models.AppConfig)
     before = datetime.now(timezone.utc)
 
     token = authorize_user(
-        user_id=uuid4(),
+        user=models.User(email="test@example.com", hashed_password="", auth_version=3),
         auth_config=config,
     )
     after = datetime.now(timezone.utc)
 
     claims = jwt.get_unverified_claims(token)
+    assert claims["auth_version"] == 3
     expire = datetime.fromtimestamp(claims["exp"], tz=timezone.utc)
 
     assert before + timedelta(minutes=30) - timedelta(seconds=1) <= expire
@@ -30,13 +30,14 @@ def test_authorize_user_prefers_explicit_expiration(config: models.AppConfig):
     before = datetime.now(timezone.utc)
 
     token = authorize_user(
-        user_id=uuid4(),
+        user=models.User(email="test@example.com", hashed_password="", auth_version=3),
         auth_config=config,
         token_expiration_minutes=5,
     )
     after = datetime.now(timezone.utc)
 
     claims = jwt.get_unverified_claims(token)
+    assert claims["auth_version"] == 3
     expire = datetime.fromtimestamp(claims["exp"], tz=timezone.utc)
 
     assert before + timedelta(minutes=5) - timedelta(seconds=1) <= expire
@@ -49,7 +50,7 @@ def test_authorize_response_uses_resolved_expiration_for_cookie(
     config = config.model_copy(update={"AUTH_LOGIN_EXPIRATION_MINUTES": 45})
     response = authorize_response(
         Response(),
-        user_id=uuid4(),
+        user=models.User(email="test@example.com", hashed_password="", auth_version=3),
         auth_config=config,
     )
 

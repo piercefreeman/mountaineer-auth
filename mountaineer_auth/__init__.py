@@ -20,6 +20,7 @@ from mountaineer_auth.controllers.verify_controller import (
 )
 from mountaineer_auth.exceptions import UnauthorizedError as UnauthorizedError
 from mountaineer_auth.models import UserAuthMixin as UserAuthMixin
+from mountaineer_auth.passwords import change_password as change_password
 from mountaineer_auth.plugin import (
     create_plugin as create_plugin,
     plugin as plugin,

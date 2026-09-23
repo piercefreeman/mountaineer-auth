@@ -1,12 +1,13 @@
 from datetime import datetime, timedelta, timezone
 from typing import TypeVar
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 from fastapi.responses import Response
 from jose import jwt
 
 from mountaineer_auth import dependencies as AuthDependencies
 from mountaineer_auth.config import AuthConfig
+from mountaineer_auth.models import UserAuthMixin
 
 ResponseType = TypeVar("ResponseType", bound=Response)
 
@@ -14,7 +15,7 @@ ResponseType = TypeVar("ResponseType", bound=Response)
 def authorize_response(
     response: ResponseType,
     *,
-    user_id: UUID,
+    user: UserAuthMixin,
     auth_config: AuthConfig,
     token_expiration_minutes: int | None = None,
 ) -> ResponseType:
@@ -29,7 +30,7 @@ def authorize_response(
     )
 
     access_token = authorize_user(
-        user_id=user_id,
+        user=user,
         auth_config=auth_config,
         token_expiration_minutes=resolved_token_expiration_minutes,
     )
@@ -51,12 +52,13 @@ def authorize_response(
 
 def authorize_user(
     *,
-    user_id: UUID,
+    user: UserAuthMixin,
     auth_config: AuthConfig,
     token_expiration_minutes: int | None = None,
 ):
     """
-    Generates the user a new temporary API key
+    Generates a temporary API key bound to the authenticated user's version.
+    Pass the same user snapshot used to verify the password.
 
     """
     # Randomly seed with a uuid4, then encrypt with our secret key to add
@@ -70,7 +72,12 @@ def authorize_user(
     expire = datetime.now(timezone.utc) + timedelta(
         minutes=resolved_token_expiration_minutes
     )
-    to_encode = {"sub": str(raw_token), "user_id": str(user_id), "exp": expire}
+    to_encode = {
+        "sub": str(raw_token),
+        "user_id": str(user.id),
+        "auth_version": user.auth_version,
+        "exp": expire,
+    }
     encoded_token = jwt.encode(
         to_encode,
         auth_config.API_SECRET_KEY,
