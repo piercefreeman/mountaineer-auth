@@ -37,7 +37,8 @@ async def peek_user(
             options={"require_exp": True},
         )
         user_id = UUID(payload["user_id"])
-        auth_version = payload.get("auth_version")
+        # Legacy tokens belong to version 0, never to the user's current version.
+        auth_version = payload.get("auth_version", 0)
         if type(auth_version) is not int or auth_version < 0:
             return None
     except ExpiredSignatureError:

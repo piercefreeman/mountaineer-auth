@@ -100,9 +100,12 @@ calling it. Direct assignments to `hashed_password` bypass this revocation.
   `authorize_response(response, user=user, ...)` instead of passing `user_id`.
   Use the same user snapshot that passed password verification; do not reload
   its version after verifying an old password.
-- Existing JWTs without `auth_version` are rejected. Users must sign in again,
-  and integrations must replace their API JWTs. Upgrade every service/replica
-  accepting these credentials; older validators do not enforce revocation.
+- Existing JWTs without `auth_version` are treated as version `0`, preserving
+  valid sessions and API JWTs on upgrade. The first password change or reset
+  increments the user's version and invalidates those legacy credentials too.
+  This does not retroactively revoke tokens for password resets performed before
+  the upgrade. Upgrade every service/replica accepting these credentials; older
+  validators do not enforce revocation.
 - `Depends(...)` usage of authentication dependencies is unchanged. For direct
   Python calls, use `user = await peek_user(request, config, db_connection)` and
   `peek_user_id(user)`. User-ID authentication now requires database access.

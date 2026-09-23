@@ -95,6 +95,11 @@ async def test_password_update_revokes_credentials(
     assert not user.is_verified
     session_cookie = signup.headers["set-cookie"].split(";", 1)[0]
     api_token = authorize_user(user=user, auth_config=config)
+    legacy_claims = jwt.get_unverified_claims(api_token)
+    del legacy_claims["auth_version"]
+    legacy_token = jwt.encode(
+        legacy_claims, config.API_SECRET_KEY, algorithm=config.API_KEY_ALGORITHM
+    )
     other_user = models.User(email="other@example.com", hashed_password="")
     await db_connection.insert([other_user])
     other_token = authorize_user(user=other_user, auth_config=config)
@@ -109,7 +114,11 @@ async def test_password_update_revokes_credentials(
         for _ in range(2)
     ]
     await db_connection.insert(reset_links)
-    old_cookies = [session_cookie, f'access_key="Bearer {api_token}"']
+    old_cookies = [
+        session_cookie,
+        f'access_key="Bearer {api_token}"',
+        f'access_key="Bearer {legacy_token}"',
+    ]
     for cookie in old_cookies:
         for path in ("/user", "/user-id", "/optional-user", "/optional-id"):
             response = await auth_client.get(path, headers={"cookie": cookie})
@@ -204,7 +213,6 @@ async def test_password_update_revokes_credentials(
 @pytest.mark.parametrize(
     "claims",
     [
-        {},  # Legacy credential with no version.
         {"auth_version": None},
         {"auth_version": False},
         {"auth_version": "0"},
