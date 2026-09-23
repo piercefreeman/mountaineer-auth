@@ -126,7 +126,7 @@ class LoginController(ControllerBase):
         response = JSONResponse(content=[], status_code=status.HTTP_200_OK)
         response = authorize_response(
             response,
-            user_id=user.id,
+            user=user,
             auth_config=auth_config,
             token_expiration_minutes=self.token_expiration_minutes,
         )

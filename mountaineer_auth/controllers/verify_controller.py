@@ -21,6 +21,7 @@ from mountaineer import (
 from mountaineer_auth import models
 from mountaineer_auth.config import AuthConfig
 from mountaineer_auth.models import VerificationType
+from mountaineer_auth.passwords import change_password
 from mountaineer_auth.views import get_auth_view_path
 
 
@@ -126,41 +127,57 @@ class VerifyController(ControllerBase):
         db_connection: DBConnection = Depends(DatabaseDependencies.get_db_connection),
         config: AuthConfig = Depends(CoreDependencies.get_config_with_type(AuthConfig)),
     ) -> None:
-        verification_state = await self.get_verification_obj(
-            verification_code=verification_code,
-            db_connection=db_connection,
-            config=config,
-        )
-
-        if not verification_state:
-            raise ResetPasswordInvalid(invalid_reason="Invalid reset token.")
-
-        # Only allow verification on certain request types
-        if verification_state.verification_type != VerificationType.FORGOT_PASSWORD:
-            raise ResetPasswordInvalid(invalid_reason="Non-reset password token found.")
-
-        if verification_state.is_used:
-            raise ResetPasswordInvalid(
-                invalid_reason="Reset token has already been used."
-            )
-
-        # Verify passwords are equal
         if payload.password != payload.verify_password:
             raise ResetPasswordInvalid(
                 invalid_reason="Passwords are not equal. Re-enter them to make sure they're the same."
             )
 
-        # We can reuse the user identification logic, since forgetting the password
-        # is another way to verify the user's email
-        hashed_password = config.AUTH_USER.get_password_hash(payload.password)
+        async with db_connection.transaction():
+            verification_state = await self.get_verification_obj(
+                verification_code=verification_code,
+                db_connection=db_connection,
+                config=config,
+            )
+            if verification_state is None:
+                raise ResetPasswordInvalid(invalid_reason="Invalid reset token.")
 
-        user = await self.verify_initial_user(
-            config=config,
-            verification_state=verification_state,
-            db_connection=db_connection,
-        )
-        user.hashed_password = hashed_password
-        await db_connection.update([user])
+            # Serialize recovery and password changes for this account before
+            # rechecking the link. Different reset links must share the same lock.
+            users = await db_connection.exec(
+                select(config.AUTH_USER)
+                .where(config.AUTH_USER.id == verification_state.user_id)
+                .for_update()
+            )
+            if not users:
+                raise ResetPasswordInvalid(invalid_reason="Invalid reset token.")
+            verification_states = await db_connection.exec(
+                select(config.AUTH_VERIFICATION_STATE).where(
+                    config.AUTH_VERIFICATION_STATE.id == verification_state.id
+                )
+            )
+            verification_state = verification_states[0] if verification_states else None
+            if verification_state is None:
+                raise ResetPasswordInvalid(invalid_reason="Invalid reset token.")
+            if verification_state.verification_type != VerificationType.FORGOT_PASSWORD:
+                raise ResetPasswordInvalid(
+                    invalid_reason="Non-reset password token found."
+                )
+            if verification_state.is_used:
+                raise ResetPasswordInvalid(
+                    invalid_reason="Reset token has already been used."
+                )
+            if verification_state.expiration_date <= datetime.now(timezone.utc):
+                raise ResetPasswordInvalid(invalid_reason="Reset token has expired.")
+
+            user = await change_password(
+                user=users[0],
+                password=payload.password,
+                auth_config=config,
+                db_connection=db_connection,
+            )
+            # Recovery also proves ownership of a previously unverified email.
+            user.is_verified = True
+            await db_connection.update([user])
 
         if self.reset_password_callback:
             await self.reset_password_callback(verification_code)

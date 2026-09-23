@@ -13,78 +13,56 @@ from mountaineer_auth.logging import LOGGER
 from mountaineer_auth.models import UserAuthMixin
 
 
-def peek_user_id(
-    request: Request,
-    auth_config: AuthConfig = Depends(
-        CoreDependencies.get_config_with_type(AuthConfig)
-    ),
-) -> UUID | None:
-    """
-    Extracts and validates the user ID from the JWT token in the request cookies.
-    Does not raise exceptions on invalid tokens, making it safe for optional auth flows.
-
-    :param request: The FastAPI request object containing cookies
-    :param auth_config: Auth configuration containing API keys and algorithms
-    :return: The validated user ID if present and valid, None otherwise
-
-    Returns None in cases of:
-        * Missing token
-        * Expired token
-        * Invalid token format
-        * Missing user_id in payload
-    """
-    try:
-        token = request.cookies.get(access_token_cookie_key())
-        if not token:
-            return None
-
-        token = token.lstrip("Bearer").strip()
-        payload = jwt.decode(
-            token,
-            auth_config.API_SECRET_KEY,
-            algorithms=[auth_config.API_KEY_ALGORITHM],
-        )
-
-        user_id = payload.get("user_id")
-        if user_id is None:
-            return None
-
-        return UUID(user_id)
-    except ExpiredSignatureError:
-        LOGGER.exception("Token expired")
-        return None
-    except JWTError as e:
-        LOGGER.exception(e)
-        return None
-
-
 async def peek_user(
     request: Request,
-    user_id: UUID | None = Depends(peek_user_id),
     auth_config: AuthConfig = Depends(
         CoreDependencies.get_config_with_type(AuthConfig)
     ),
     db_connection: DBConnection = Depends(DatabaseDependencies.get_db_connection),
 ) -> UserAuthMixin | None:
     """
-    Retrieves the full user object from the database based on the authenticated user ID.
-    This is a non-throwing dependency suitable for optional auth flows.
-
-    :param request: The FastAPI request object
-    :param user_id: Optional UUID from the JWT token validation
-    :param auth_config: Auth configuration containing user model information
-    :param db_connection: Database connection for querying the user
-    :return: The full user object if found, None if the user_id is invalid or the user doesn't exist
+    Validates the cookie JWT and its credential version against the current user.
+    Returns None for missing, malformed, expired, or revoked credentials.
     """
-    # If user_id is none we failed validation of the user credentials
-    if user_id is None:
+    try:
+        token = request.cookies.get(access_token_cookie_key())
+        if not token:
+            return None
+
+        token = token.removeprefix("Bearer ").strip()
+        payload = jwt.decode(
+            token,
+            auth_config.API_SECRET_KEY,
+            algorithms=[auth_config.API_KEY_ALGORITHM],
+            options={"require_exp": True},
+        )
+        user_id = UUID(payload["user_id"])
+        auth_version = payload.get("auth_version")
+        if type(auth_version) is not int or auth_version < 0:
+            return None
+    except ExpiredSignatureError:
+        LOGGER.exception("Token expired")
+        return None
+    except JWTError as e:
+        LOGGER.exception(e)
+        return None
+    except (KeyError, ValueError, TypeError, AttributeError):
         return None
 
-    user_query = select(auth_config.AUTH_USER).where(
-        auth_config.AUTH_USER.id == user_id
+    users = await db_connection.exec(
+        select(auth_config.AUTH_USER).where(auth_config.AUTH_USER.id == user_id)
     )
-    users = await db_connection.exec(user_query)
-    return users[0] if users else None
+    user = users[0] if users else None
+    if user is None or user.auth_version != auth_version:
+        return None
+    return user
+
+
+def peek_user_id(
+    peeked_user: UserAuthMixin | None = Depends(peek_user),
+) -> UUID | None:
+    """Returns the user ID only after database-backed credential validation."""
+    return peeked_user.id if peeked_user is not None else None
 
 
 def require_valid_user_id(

@@ -184,7 +184,7 @@ class SignupController(ControllerBase):
         response = JSONResponse(content=[], status_code=status.HTTP_200_OK)
         response = authorize_response(
             response,
-            user_id=new_user.id,
+            user=new_user,
             auth_config=auth_config,
             token_expiration_minutes=self.token_expiration_minutes,
         )

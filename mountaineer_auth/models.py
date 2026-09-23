@@ -20,6 +20,7 @@ class UserAuthMixin(TableBase, autodetect=False):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     email: str = Field(unique=True)
     hashed_password: str
+    auth_version: int = 0
     is_verified: bool = False
     is_admin: bool = False
 
